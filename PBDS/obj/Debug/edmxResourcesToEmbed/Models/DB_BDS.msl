@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="BATDONGSANModelStoreContainer" CdmEntityContainer="BATDONGSANEntities">
+    <EntitySetMapping Name="Admins">
+      <EntityTypeMapping TypeName="BATDONGSANModel.Admin">
+        <MappingFragment StoreEntitySet="Admin">
+          <ScalarProperty Name="idtaikhoan" ColumnName="idtaikhoan" />
+          <ScalarProperty Name="tentaikhoan" ColumnName="tentaikhoan" />
+          <ScalarProperty Name="matkhau" ColumnName="matkhau" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Baidangs">
+      <EntityTypeMapping TypeName="BATDONGSANModel.Baidang">
+        <MappingFragment StoreEntitySet="Baidang">
+          <ScalarProperty Name="idbaidang" ColumnName="idbaidang" />
+          <ScalarProperty Name="tenbaidang" ColumnName="tenbaidang" />
+          <ScalarProperty Name="diachi" ColumnName="diachi" />
+          <ScalarProperty Name="gia" ColumnName="gia" />
+          <ScalarProperty Name="dientich" ColumnName="dientich" />
+          <ScalarProperty Name="loaibaidang" ColumnName="loaibaidang" />
+          <ScalarProperty Name="mota" ColumnName="mota" />
+          <ScalarProperty Name="img" ColumnName="img" />
+          <ScalarProperty Name="trangthai" ColumnName="trangthai" />
+          <ScalarProperty Name="ngaydang" ColumnName="ngaydang" />
+          <ScalarProperty Name="ngaycapnhat" ColumnName="ngaycapnhat" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LoaiBaiDangs">
+      <EntityTypeMapping TypeName="BATDONGSANModel.LoaiBaiDang">
+        <MappingFragment StoreEntitySet="LoaiBaiDang">
+          <ScalarProperty Name="idloaibaidang" ColumnName="idloaibaidang" />
+          <ScalarProperty Name="tenloaibaidang" ColumnName="tenloaibaidang" />
+          <ScalarProperty Name="mota" ColumnName="mota" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NhanViens">
+      <EntityTypeMapping TypeName="BATDONGSANModel.NhanVien">
+        <MappingFragment StoreEntitySet="NhanVien">
+          <ScalarProperty Name="idnhanvien" ColumnName="idnhanvien" />
+          <ScalarProperty Name="hoten" ColumnName="hoten" />
+          <ScalarProperty Name="taikhoan" ColumnName="taikhoan" />
+          <ScalarProperty Name="matkhau" ColumnName="matkhau" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="sodienthoai" ColumnName="sodienthoai" />
+          <ScalarProperty Name="diachi" ColumnName="diachi" />
+          <ScalarProperty Name="phongban" ColumnName="phongban" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PhanCongSales">
+      <EntityTypeMapping TypeName="BATDONGSANModel.PhanCongSale">
+        <MappingFragment StoreEntitySet="PhanCongSales">
+          <ScalarProperty Name="idphancong" ColumnName="idphancong" />
+          <ScalarProperty Name="baidang" ColumnName="baidang" />
+          <ScalarProperty Name="nhanvien" ColumnName="nhanvien" />
+          <ScalarProperty Name="sales" ColumnName="sales" />
+          <ScalarProperty Name="phantramhoahong" ColumnName="phantramhoahong" />
+          <ScalarProperty Name="ngaytao" ColumnName="ngaytao" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PhiHoaHongs">
+      <EntityTypeMapping TypeName="BATDONGSANModel.PhiHoaHong">
+        <MappingFragment StoreEntitySet="PhiHoaHong">
+          <ScalarProperty Name="idhoahong" ColumnName="idhoahong" />
+          <ScalarProperty Name="sale" ColumnName="sale" />
+          <ScalarProperty Name="tongtien" ColumnName="tongtien" />
+          <ScalarProperty Name="nguoitao" ColumnName="nguoitao" />
+          <ScalarProperty Name="ngaytao" ColumnName="ngaytao" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PhongBans">
+      <EntityTypeMapping TypeName="BATDONGSANModel.PhongBan">
+        <MappingFragment StoreEntitySet="PhongBan">
+          <ScalarProperty Name="idphongban" ColumnName="idphongban" />
+          <ScalarProperty Name="tenphongban" ColumnName="tenphongban" />
+          <ScalarProperty Name="mota" ColumnName="mota" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="QuanHuyens">
+      <EntityTypeMapping TypeName="BATDONGSANModel.QuanHuyen">
+        <MappingFragment StoreEntitySet="QuanHuyen">
+          <ScalarProperty Name="idquanhuyen" ColumnName="idquanhuyen" />
+          <ScalarProperty Name="ten" ColumnName="ten" />
+          <ScalarProperty Name="idtinhthanhpho" ColumnName="idtinhthanhpho" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sales">
+      <EntityTypeMapping TypeName="BATDONGSANModel.Sale">
+        <MappingFragment StoreEntitySet="Sales">
+          <ScalarProperty Name="idsales" ColumnName="idsales" />
+          <ScalarProperty Name="hoten" ColumnName="hoten" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="sodienthoai" ColumnName="sodienthoai" />
+          <ScalarProperty Name="diachi" ColumnName="diachi" />
+          <ScalarProperty Name="baidang" ColumnName="baidang" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TinhThanhPhoes">
+      <EntityTypeMapping TypeName="BATDONGSANModel.TinhThanhPho">
+        <MappingFragment StoreEntitySet="TinhThanhPho">
+          <ScalarProperty Name="idtinhthanhpho" ColumnName="idtinhthanhpho" />
+          <ScalarProperty Name="tentinhthanhpho" ColumnName="tentinhthanhpho" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

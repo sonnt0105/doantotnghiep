@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="db_firstModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="baidang">
+    <Key>
+      <PropertyRef Name="idbaidang" />
+    </Key>
+    <Property Name="idbaidang" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="tenbaidang" Type="nvarchar" MaxLength="100" />
+    <Property Name="diachi" Type="int" />
+    <Property Name="gia" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="dientich" Type="int" />
+    <Property Name="loaibaidang" Type="int" />
+    <Property Name="mota" Type="nvarchar" MaxLength="500" />
+    <Property Name="trangthai" Type="int" />
+    <Property Name="ngaydang" Type="date" />
+    <Property Name="ngaycapnhat" Type="date" />
+  </EntityType>
+  <EntityType Name="LoaiBaiDang">
+    <Key>
+      <PropertyRef Name="idloaibaidang" />
+    </Key>
+    <Property Name="idloaibaidang" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="tenloaibaidang" Type="nvarchar" MaxLength="80" />
+    <Property Name="mota" Type="nvarchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="NhanVien">
+    <Key>
+      <PropertyRef Name="idnhanvien" />
+    </Key>
+    <Property Name="idnhanvien" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="hoten" Type="nvarchar" MaxLength="40" />
+    <Property Name="email" Type="nvarchar" MaxLength="40" />
+    <Property Name="sodienthoai" Type="int" />
+    <Property Name="diachi" Type="nvarchar" MaxLength="100" />
+    <Property Name="phongban" Type="int" />
+  </EntityType>
+  <EntityType Name="PhanCongSales">
+    <Key>
+      <PropertyRef Name="idphancong" />
+    </Key>
+    <Property Name="idphancong" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="baidang" Type="int" />
+    <Property Name="nhanvien" Type="int" />
+    <Property Name="sales" Type="int" />
+    <Property Name="phantramhoahong" Type="float" />
+    <Property Name="ngaytao" Type="date" />
+  </EntityType>
+  <EntityType Name="PhiHoaHong">
+    <Key>
+      <PropertyRef Name="idhoahong" />
+    </Key>
+    <Property Name="idhoahong" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="sale" Type="int" />
+    <Property Name="tongtien" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="nguoitao" Type="int" />
+    <Property Name="ngaytao" Type="date" />
+  </EntityType>
+  <EntityType Name="PhongBan">
+    <Key>
+      <PropertyRef Name="idphongban" />
+    </Key>
+    <Property Name="idphongban" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="tenphongban" Type="nvarchar" MaxLength="50" />
+    <Property Name="mota" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="QuanHuyen">
+    <Key>
+      <PropertyRef Name="idquanhuyen" />
+    </Key>
+    <Property Name="idquanhuyen" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ten" Type="nvarchar" MaxLength="50" />
+    <Property Name="idtinhthanhpho" Type="int" />
+  </EntityType>
+  <EntityType Name="Sales">
+    <Key>
+      <PropertyRef Name="idsales" />
+    </Key>
+    <Property Name="idsales" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="hoten" Type="nvarchar" MaxLength="40" />
+    <Property Name="email" Type="nvarchar" MaxLength="40" />
+    <Property Name="sodienthoai" Type="int" />
+    <Property Name="diachi" Type="nvarchar" MaxLength="100" />
+    <Property Name="baidang" Type="int" />
+  </EntityType>
+  <EntityType Name="TinhThanhPho">
+    <Key>
+      <PropertyRef Name="idtinhthanhpho" />
+    </Key>
+    <Property Name="idtinhthanhpho" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="tentinhthanhpho" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK__baidang__diachi__1BFD2C07">
+    <End Role="QuanHuyen" Type="Self.QuanHuyen" Multiplicity="0..1" />
+    <End Role="baidang" Type="Self.baidang" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="QuanHuyen">
+        <PropertyRef Name="idquanhuyen" />
+      </Principal>
+      <Dependent Role="baidang">
+        <PropertyRef Name="diachi" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__baidang__loaibai__1CF15040">
+    <End Role="LoaiBaiDang" Type="Self.LoaiBaiDang" Multiplicity="0..1" />
+    <End Role="baidang" Type="Self.baidang" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LoaiBaiDang">
+        <PropertyRef Name="idloaibaidang" />
+      </Principal>
+      <Dependent Role="baidang">
+        <PropertyRef Name="loaibaidang" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__NhanVien__phongb__1920BF5C">
+    <End Role="PhongBan" Type="Self.PhongBan" Multiplicity="0..1" />
+    <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PhongBan">
+        <PropertyRef Name="idphongban" />
+      </Principal>
+      <Dependent Role="NhanVien">
+        <PropertyRef Name="phongban" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PhanCongS__baida__22AA2996">
+    <End Role="baidang" Type="Self.baidang" Multiplicity="0..1" />
+    <End Role="PhanCongSales" Type="Self.PhanCongSales" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="baidang">
+        <PropertyRef Name="idbaidang" />
+      </Principal>
+      <Dependent Role="PhanCongSales">
+        <PropertyRef Name="baidang" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PhanCongS__nhanv__239E4DCF">
+    <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="0..1" />
+    <End Role="PhanCongSales" Type="Self.PhanCongSales" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NhanVien">
+        <PropertyRef Name="idnhanvien" />
+      </Principal>
+      <Dependent Role="PhanCongSales">
+        <PropertyRef Name="nhanvien" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PhanCongS__sales__24927208">
+    <End Role="Sales" Type="Self.Sales" Multiplicity="0..1" />
+    <End Role="PhanCongSales" Type="Self.PhanCongSales" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sales">
+        <PropertyRef Name="idsales" />
+      </Principal>
+      <Dependent Role="PhanCongSales">
+        <PropertyRef Name="sales" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PhiHoaHon__nguoi__286302EC">
+    <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="0..1" />
+    <End Role="PhiHoaHong" Type="Self.PhiHoaHong" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NhanVien">
+        <PropertyRef Name="idnhanvien" />
+      </Principal>
+      <Dependent Role="PhiHoaHong">
+        <PropertyRef Name="nguoitao" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PhiHoaHong__sale__276EDEB3">
+    <End Role="Sales" Type="Self.Sales" Multiplicity="0..1" />
+    <End Role="PhiHoaHong" Type="Self.PhiHoaHong" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sales">
+        <PropertyRef Name="idsales" />
+      </Principal>
+      <Dependent Role="PhiHoaHong">
+        <PropertyRef Name="sale" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__QuanHuyen__idtin__1273C1CD">
+    <End Role="TinhThanhPho" Type="Self.TinhThanhPho" Multiplicity="0..1" />
+    <End Role="QuanHuyen" Type="Self.QuanHuyen" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TinhThanhPho">
+        <PropertyRef Name="idtinhthanhpho" />
+      </Principal>
+      <Dependent Role="QuanHuyen">
+        <PropertyRef Name="idtinhthanhpho" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Sales__baidang__1FCDBCEB">
+    <End Role="baidang" Type="Self.baidang" Multiplicity="0..1" />
+    <End Role="Sales" Type="Self.Sales" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="baidang">
+        <PropertyRef Name="idbaidang" />
+      </Principal>
+      <Dependent Role="Sales">
+        <PropertyRef Name="baidang" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="db_firstModelStoreContainer">
+    <EntitySet Name="baidang" EntityType="Self.baidang" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LoaiBaiDang" EntityType="Self.LoaiBaiDang" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NhanVien" EntityType="Self.NhanVien" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PhanCongSales" EntityType="Self.PhanCongSales" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PhiHoaHong" EntityType="Self.PhiHoaHong" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PhongBan" EntityType="Self.PhongBan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="QuanHuyen" EntityType="Self.QuanHuyen" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sales" EntityType="Self.Sales" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TinhThanhPho" EntityType="Self.TinhThanhPho" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__baidang__diachi__1BFD2C07" Association="Self.FK__baidang__diachi__1BFD2C07">
+      <End Role="QuanHuyen" EntitySet="QuanHuyen" />
+      <End Role="baidang" EntitySet="baidang" />
+    </AssociationSet>
+    <AssociationSet Name="FK__baidang__loaibai__1CF15040" Association="Self.FK__baidang__loaibai__1CF15040">
+      <End Role="LoaiBaiDang" EntitySet="LoaiBaiDang" />
+      <End Role="baidang" EntitySet="baidang" />
+    </AssociationSet>
+    <AssociationSet Name="FK__NhanVien__phongb__1920BF5C" Association="Self.FK__NhanVien__phongb__1920BF5C">
+      <End Role="PhongBan" EntitySet="PhongBan" />
+      <End Role="NhanVien" EntitySet="NhanVien" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PhanCongS__baida__22AA2996" Association="Self.FK__PhanCongS__baida__22AA2996">
+      <End Role="baidang" EntitySet="baidang" />
+      <End Role="PhanCongSales" EntitySet="PhanCongSales" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PhanCongS__nhanv__239E4DCF" Association="Self.FK__PhanCongS__nhanv__239E4DCF">
+      <End Role="NhanVien" EntitySet="NhanVien" />
+      <End Role="PhanCongSales" EntitySet="PhanCongSales" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PhanCongS__sales__24927208" Association="Self.FK__PhanCongS__sales__24927208">
+      <End Role="Sales" EntitySet="Sales" />
+      <End Role="PhanCongSales" EntitySet="PhanCongSales" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PhiHoaHon__nguoi__286302EC" Association="Self.FK__PhiHoaHon__nguoi__286302EC">
+      <End Role="NhanVien" EntitySet="NhanVien" />
+      <End Role="PhiHoaHong" EntitySet="PhiHoaHong" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PhiHoaHong__sale__276EDEB3" Association="Self.FK__PhiHoaHong__sale__276EDEB3">
+      <End Role="Sales" EntitySet="Sales" />
+      <End Role="PhiHoaHong" EntitySet="PhiHoaHong" />
+    </AssociationSet>
+    <AssociationSet Name="FK__QuanHuyen__idtin__1273C1CD" Association="Self.FK__QuanHuyen__idtin__1273C1CD">
+      <End Role="TinhThanhPho" EntitySet="TinhThanhPho" />
+      <End Role="QuanHuyen" EntitySet="QuanHuyen" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Sales__baidang__1FCDBCEB" Association="Self.FK__Sales__baidang__1FCDBCEB">
+      <End Role="baidang" EntitySet="baidang" />
+      <End Role="Sales" EntitySet="Sales" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
