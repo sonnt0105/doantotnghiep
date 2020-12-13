@@ -1,0 +1,415 @@
+﻿@model IEnumerable<PBDS.Models.EBatDongSan>
+
+@{
+    ViewBag.Title = "Tìm kiếm bài đăng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    li {
+        float: left;
+    }
+</style>
+
+<link rel="stylesheet" href="https://staticfile.batdongsan.com.vn/css/Product/filestatic.ver202010151221.msvbds.productlisting.min.css" />
+
+<!--ajax get quận huyện từ IDTinhThanhPho-->
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<script language="javascript" type="text/javascript">
+    function GetQuanHuyen(_IDTinhThanhPho) {
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#ddlquanhuyen").html(procemessage).show();
+        var url = "/Home/GetQuanHuyenByIDTinhThanhPho/";
+
+        $.ajax({
+            url: url,
+            data: { IDTinhThanhPho: _IDTinhThanhPho },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>Tất cả quận huyện</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#ddlquanhuyen").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+    }
+</script>
+
+<script language="javascript" type="text/javascript">
+    function GetDuAn(_IDQuanHuyen) {
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#ddlduan").html(procemessage).show();
+        var url = "/Home/GetDuAnbyIDQuanHuyen/";
+
+        $.ajax({
+            url: url,
+            data: { IDQuanHuyen: _IDQuanHuyen },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>tất cả dự án</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#ddlduan").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+    }
+</script>
+
+<script language="javascript" type="text/javascript">
+    function GetLoaiNhaDat(_IDLoaiBaiDang) {
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#ddlloainhadat").html(procemessage).show();
+        var url = "/Home/GetLoaiNhaDatByIDLoaiBaiDang/";
+
+        $.ajax({
+            url: url,
+            data: { IDLoaiBaiDang: _IDLoaiBaiDang },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>Tất cả loại nhà đất</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#ddlloainhadat").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+    }
+</script>
+
+<script language="javascript" type="text/javascript">
+    function GetPhuongXa(_IDQuanHuyen) {
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#ddlphuongxa").html(procemessage).show();
+        var url = "/Home/GetPhuongXaByIDQuanHuyen/";
+
+        $.ajax({
+            url: url,
+            data: { IDQuanHuyen: _IDQuanHuyen },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>Tất cả phường xã</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#ddlphuongxa").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        let myBtns = document.querySelectorAll('.buttons_muaban');
+        myBtns.forEach(function (btn) {
+            btn.addEventListener('click', () => {
+                myBtns.forEach(b => b.classList.remove('actived'));
+                btn.classList.add('actived');
+            });
+        });
+    });
+    function change(value) {
+        document.getElementById("type").value = value;
+    }
+</script>
+
+@using (Html.BeginForm("TimKiemBaiDang", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <form id="boxSearchForm" action="/microservice-architecture-router/Product/ProductSearch/Index" method="post">
+        <div class="search-bar shadow-lv-1 clearfix">
+            <ul class="search-bar-tab mar-left-16 pad-top-8 mar-right-16">
+                <li class="buttons_muaban actived" onclick="change(1); GetLoaiNhaDat(1);">Bán</li>
+                <li class="buttons_muaban" onclick="change(2); GetLoaiNhaDat(2);">Cho thuê</li>
+            </ul>
+            <input data-val="true" data-val-required="The CateId field is required." id="type" name="IDLoaiBaiDang" type="hidden" value="1" />
+
+            <div class="search-bar-suggestion pad-top-8 mar-right-16">
+                <input type="hidden" id="suggestionTemp">
+                <input id="Keyword" name="Keyword" type="hidden" value="" />
+                <input type="text" placeholder="Tìm kiếm địa điểm, khu vực" value="@ViewBag.textsearch" class="search-bar-input" name="searchstring" id="search-suggestion" autocomplete="off" />
+                <span class="icon-close hiding">
+                    <img src="https://staticfile.batdongsan.com.vn/images/icons/16x16/grey/ic_close.png" />
+                </span>
+            </div>
+            <div id="divCategoryRe" class="select-control select-cate">
+                <div class="select-control-label">
+                    <div class="">Loại nhà đất</div>
+                </div>
+                <div class="form-group">
+                    @Html.DropDownList("IDLoaiNhaDat", new SelectList(ViewBag.listloainhadat, "ID", "TenLoaiNhaDat"), "Tất cả loại nhà đất", new { @class = "form-control", id = "ddlloainhadat", name = "ddlloainhadat" })
+                </div>
+            </div>
+            <div class="select-control city-control">
+                <div class="select-control-label">
+                    <div class="">Tỉnh Thành</div>
+                </div>
+                <div class="form-group">
+                    @Html.DropDownList("IDTinhThanhPho", new SelectList(ViewBag.listtinhthanh, "ID", "TenTinhThanhPho"), new { @class = "form-control", @onchange = "javascript:GetQuanHuyen(this.value); javascript:GetDuAn(this.value);javascript:GetPhuongXa(0);" })
+                </div>
+            </div>
+
+            <div class="select-control city-control" aria-label="Bạn hãy chọn tỉnh thành trước" data-microtip-position="top" role="tooltip">
+                <div class="select-control-label">
+                    <div class="">Quận Huyện</div>
+                </div>
+                <div class="form-group">
+                    @Html.DropDownList("IDQuanHuyen", new SelectList(ViewBag.listquanhuyen, "ID", "TenQuanHuyen"), new { @class = "form-control", @onchange = "javascript:GetDuAn(this.value);javascript:GetPhuongXa(this.value);", id = "ddlquanhuyen", name = "ddlquanhuyen" })
+                </div>
+            </div>
+
+            @*<div class="select-control city-control" aria-label="Bạn hãy chọn quận huyện trước" data-microtip-position="top" role="tooltip">
+                <div class="select-control-label">
+                    <div class="">Phường Xã</div>
+                </div>
+                <div class="form-group">
+                    @Html.DropDownList("IDPhuongXa", new SelectList(ViewBag.listphuongxa, "ID", "TenPhuongXa"), "Tất cả Phường xã", new { @class = "form-control", id = "ddlphuongxa", name = "ddlphuongxa" })
+                </div>
+            </div>*@
+
+            <div class="select-control price-control">
+                <div class="select-control-label">
+                    <div class="">Mức giá</div>
+                </div>
+                <div class="price-slider-range ">
+                    <input id="txtPriceMinValue" name="GiaTu" placeholder="Từ...Triệu" class="min-value advance-options" size="13" style="padding:5px 0px; width:115px" value="@ViewBag.batdongsansearch.GiaTu" maxlength="6" numbersonly="true" decimal="true" type="number" />
+                    <input id="txtPriceMaxValue" name="GiaDen" placeholder="Đến...Triệu" class="max-value advance-options" size="10" style="padding:5px 0px; width:115px" value="@ViewBag.batdongsansearch.GiaDen" maxlength="6" numbersonly="true" decimal="true" type="number" />
+                </div>
+            </div>
+            <div class="select-control project-control" aria-label="Bạn hãy chọn quận huyện trước" data-microtip-position="top" role="tooltip">
+                <div class="select-control-label">
+                    <div>Dự Án</div>
+                </div>
+                <div class="form-group">
+                    @Html.DropDownList("IDDuAn", new SelectList(ViewBag.listduan, "ID", "TenDuAn"), "Tất cả dự án", new { @class = "form-control", id = "ddlduan", name = "ddlduan" })
+                </div>
+            </div>
+            <input type="submit" id="btnSearch" class="btn-blue-7" style=" font-size:17px ;margin:15px 30px 10px 60px;padding:15px 40px 15px 40px ;color:white;" value="Tìm kiếm" />
+            @*<div id="link-reset"><img src="https://staticfile.batdongsan.com.vn/images/icons/24x24/ic_reset.svg" /><span class="link-reset-tooltip">Xóa tiêu chí lọc</span></div>*@
+        </div>
+    </form>
+}
+<div class="main-container clearfix">
+    <div class="main-left">
+        <div class="product-lists mar-top-16" id="product-lists-web" style="display:block">
+            @{
+            <div class="breadcrumb all-grey-7 link-hover-blue">
+                @if (ViewBag.batdongsansearch.IDLoaiBaiDang != null)
+                {<a href="@Url.Action("TimKiemBaiDang", "Home", new { IDLoaiBaiDang = ViewBag.batdongsansearch.IDLoaiBaiDang })" title="@ViewBag.batdongsansearch.LoaiBaiDang.TenLoaiBaiDang">@ViewBag.batdongsansearch.LoaiBaiDang.TenLoaiBaiDang</a>}
+                @if (ViewBag.batdongsansearch.LoaiNhaDat != null)
+                {<span>/</span><a href="@Url.Action("TimKiemBaiDang", "Home", new { IDLoaiNhaDat = ViewBag.batdongsansearch.IDLoaiNhaDat,IDLoaiBaiDang = ViewBag.batdongsansearch.IDLoaiBaiDang }) " title="@ViewBag.batdongsansearch.LoaiNhaDat.TenLoaiNhaDat">@ViewBag.batdongsansearch.LoaiNhaDat.TenLoaiNhaDat</a>}
+                @if (ViewBag.batdongsansearch.TenLoaiNhaDat != null && ViewBag.batdongsansearch.LoaiNhaDat == null)
+                {<span>/</span><a href="@Url.Action("TimKiemBaiDang", "Home", new { IDLoaiNhaDat = ViewBag.batdongsansearch.IDLoaiNhaDat, IDLoaiBaiDang = ViewBag.batdongsansearch.IDLoaiBaiDang }) " title="@ViewBag.batdongsansearch.TenLoaiNhaDat">@ViewBag.batdongsansearch.TenLoaiNhaDat</a>}
+                @if (ViewBag.batdongsansearch.TinhThanhPho != null)
+                {<span>/</span><a href="@Url.Action("TimKiemBaiDang", "Home", new { IDTinhThanhPho = ViewBag.batdongsansearch.IDTinhThanhPho })" title="@ViewBag.batdongsansearch.TinhThanhPho.TenTinhThanhPho">@ViewBag.batdongsansearch.TinhThanhPho.TenTinhThanhPho</a>}
+                @if (ViewBag.batdongsansearch.TenTinhThanhPho != null && ViewBag.batdongsansearch.TinhThanhPho == null)
+                {<span>/</span><a href="@Url.Action("TimKiemBaiDang", "Home", new { IDTinhThanhPho = ViewBag.batdongsansearch.IDTinhThanhPho })" title="@ViewBag.batdongsansearch.TenTinhThanhPho">@ViewBag.batdongsansearch.TenTinhThanhPho</a>}
+                @if (ViewBag.batdongsansearch.QuanHuyen != null)
+                {<span>/</span><a href="@Url.Action("TimKiemBaiDang", "Home", new { IDQuanHuyen = ViewBag.batdongsansearch.IDQuanHuyen, IDTinhThanhPho = ViewBag.batdongsansearch.IDTinhThanhPho })" title="@ViewBag.batdongsansearch.QuanHuyen.TenQuanHuyen">@ViewBag.batdongsansearch.QuanHuyen.TenQuanHuyen</a>}
+                @if (ViewBag.batdongsansearch.TenQuanHuyen != null && ViewBag.batdongsansearch.QuanHuyen == null)
+                {<span>/</span><a href="@Url.Action("TimKiemBaiDang", "Home", new { IDQuanHuyen = ViewBag.batdongsansearch.IDQuanHuyen, IDTinhThanhPho = ViewBag.batdongsansearch.IDTinhThanhPho })" title="@ViewBag.batdongsansearch.TenQuanHuyen">@ViewBag.batdongsansearch.TenQuanHuyen</a>}
+                @if (ViewBag.batdongsansearch.GiaTu != null || ViewBag.batdongsansearch.GiaDen != null)
+                {<span>/</span>                      
+                            <a href="@Url.Action("TimKiemBaiDang", "Home", new { GiaTu = ViewBag.batdongsansearch.GiaTu, GiaDen = ViewBag.batdongsansearch.GiaDen })" title="Giá Từ @ViewBag.batdongsansearch.GiaTu - @ViewBag.batdongsansearch.GiaDen ">
+                                <span>
+                                    <span style="padding:0px;">Giá Từ:</span> @if (ViewBag.batdongsansearch.GiaTu != null)
+                                    {@ViewBag.batdongsansearch.GiaTu}
+                                    else
+                                    {<span>0</span>}
+                                </span>                                
+                                <span>
+                                    @if (ViewBag.batdongsansearch.GiaDen != null)
+                                    {<span style="padding:0px 15px 0px 0px">-</span> @ViewBag.batdongsansearch.GiaDen}
+                                else
+                                {<span></span>}
+                                </span>
+                                Triệu
+                            </a>     
+                }
+                @if (ViewBag.batdongsansearch.DuAn != null)
+                {<span>/</span><a href="@Url.Action("TimKiemBaiDang", "Home", new { IDDuAn = ViewBag.batdongsansearch.IDDuAn })" title="@ViewBag.batdongsansearch.DuAn.TenDuAn">@ViewBag.batdongsansearch.DuAn.TenDuAn</a>}
+            </div>
+                if (Model.Count() == 0)
+                {
+                    <div>
+                        <img style="display: block; margin-left: auto; margin-right: auto " alt="Không tìm thấy bài đăng" src="~/Images/listing_empty.png" />
+                        <p style="text-align:center">Rất tiếc, hiện tại chưa có bất động sản nào ở khu vực này.</p>
+                        <p style="text-align:center">Hãy thay đổi bộ lọc để có thêm nhiều kết quả hơn.</p>
+                    </div>
+                }
+                else
+                {                    
+                    <div class="product-list-header pad-top-8">
+                        <h1></h1>
+                        <div class="product-lists-count all-grey-7 pad-top-8 pad-bot-8">Hiện có <span id="count-number">@ViewBag.countbatdongsan</span> bất động sản.</div>
+                    </div>
+                }
+            }
+            @foreach (var item in Model)
+            {
+                <div class="vip1 product-item clearfix" uid="1440035">
+                    <div class="product-image ">
+                        <a class="product-avatar" href="@Url.Action("Detail_batdongsan","Home",new {id=item.ID })" onclick="">
+                            <img class="product-avatar-img" alt="@item.TenBatDongSan" data-src-error="/Images/no-image.png" src="~/@item.Urlimage" is-lazy-image="true" />
+                        </a>
+                    </div>
+                    <div class="product-main">
+                        <h3 class="product-title">
+                            <a href="@Url.Action("Detail_batdongsan","Home",new {id=item.ID })"
+                               title="@item.TenBatDongSan" class="vipZero product-link">
+                                @item.TenBatDongSan
+                            </a>
+                        </h3>
+                        <div class="product-info">
+                            <span class="price">@item.Gia @item.TenDonVi</span>
+                            <span class="dot">·</span>
+                            <span class="area">@item.DienTich m&#xB2;</span>
+                            <span class="dot">·</span>
+                            <span class="location">@item.TenQuanHuyen, @item.TenTinhThanhPho</span>
+                        </div>
+                        <div class="product-content">
+                            @item.Mota.Replace("<br />", " ")
+                        </div>
+                        <div class="product-wrap clearfix">
+                            <div class="product-uptime">
+                                <span class="product-labeltime">
+                                    @item.NgayDang.ToString(string.Format("dd/MM/yyyy"))
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="">
+                <nav aria-label="Page navigation example">
+                    <ul class="">
+                        @{
+                            int position;
+                            int pageCurrent = ViewBag.pageCurrent;
+                            var batdongsansearch = ViewBag.batdongsansearch;
+                            int numSize = ViewBag.numSize;
+                            int showMax = 10;
+                            int startPage;
+                            int endPage;
+                            if (numSize <= showMax)
+                            {
+                                startPage = 1;
+                                endPage = numSize;
+                            }
+                            else if (pageCurrent + 9 > numSize)
+                            {
+                                startPage = numSize - 9;
+                                endPage = numSize;
+                            }
+                            else
+                            {
+                                startPage = pageCurrent;
+                                endPage = pageCurrent + showMax - 1;
+                            }
+                            if (pageCurrent > 1)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="@Url.Action("TimkiemBaiDang", "Home", new { batdongsansearch.IDLoaiBaiDang,
+                                                              batdongsansearch.searchstring, batdongsansearch.IDLoaiNhaDat,
+                                                              batdongsansearch.IDTinhThanhPho,batdongsansearch.IDQuanHuyen,batdongsansearch.IDPhuongXa,
+                                                              batdongsansearch.GiaTu,batdongsansearch.GiaDen, batdongsansearch.IDDuAn,
+                                                              page = 1 })" tabindex="-1">
+                                        <<
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="@Url.Action("TimkiemBaiDang", "Home", new { batdongsansearch.IDLoaiBaiDang,
+                                                              batdongsansearch.searchstring, batdongsansearch.IDLoaiNhaDat,
+                                                              batdongsansearch.IDTinhThanhPho,batdongsansearch.IDQuanHuyen,batdongsansearch.IDPhuongXa,
+                                                              batdongsansearch.GiaTu,batdongsansearch.GiaDen, batdongsansearch.IDDuAn,
+                                                              page = pageCurrent-1 })" tabindex="-1">
+                                        <
+                                    </a>
+                                </li>
+                            }
+                            for (position = startPage; position <= endPage && position <= numSize; position++)
+                            {
+                                if (position == pageCurrent)
+                                {
+                                    <li class="page-item active">
+                                        <a class="page-link" href="@Url.Action("TimkiemBaiDang", "Home", new { batdongsansearch.IDLoaiBaiDang,
+                                                                  batdongsansearch.searchstring, batdongsansearch.IDLoaiNhaDat,
+                                                                  batdongsansearch.IDTinhThanhPho,batdongsansearch.IDQuanHuyen,batdongsansearch.IDPhuongXa,
+                                                                  batdongsansearch.GiaTu,batdongsansearch.GiaDen, batdongsansearch.IDDuAn,
+                                                                  page = position })">
+                                            @position
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="@Url.Action("TimkiemBaiDang", "Home", new {  batdongsansearch.IDLoaiBaiDang,
+                                            batdongsansearch.searchstring, batdongsansearch.IDLoaiNhaDat,
+                                            batdongsansearch.IDTinhThanhPho,batdongsansearch.IDQuanHuyen,batdongsansearch.IDPhuongXa,
+                                            batdongsansearch.GiaTu,batdongsansearch.GiaDen, batdongsansearch.IDDuAn,
+                                            page = position })">
+                                            @position
+                                        </a>
+                                    </li>
+                                }
+                            }
+                            if (pageCurrent > 0 && pageCurrent < numSize)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="@Url.Action("TimkiemBaiDang", "Home", new {  batdongsansearch.IDLoaiBaiDang,
+                                                    batdongsansearch.searchstring, batdongsansearch.IDLoaiNhaDat,
+                                                    batdongsansearch.IDTinhThanhPho,batdongsansearch.IDQuanHuyen,batdongsansearch.IDPhuongXa,
+                                                    batdongsansearch.GiaTu,batdongsansearch.GiaDen, batdongsansearch.IDDuAn,
+                                                    page = pageCurrent+1 })" tabindex="-1">
+                                        >
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="@Url.Action("TimkiemBaiDang", "Home", new {  batdongsansearch.IDLoaiBaiDang,
+                                                    batdongsansearch.searchstring, batdongsansearch.IDLoaiNhaDat,
+                                                    batdongsansearch.IDTinhThanhPho,batdongsansearch.IDQuanHuyen,batdongsansearch.IDPhuongXa,
+                                                    batdongsansearch.GiaTu,batdongsansearch.GiaDen, batdongsansearch.IDDuAn,
+                                                    page = numSize })" tabindex="-1">
+                                        >>
+                                    </a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(function () {
+        $('img[data-src-error]').error(function () {
+            var o = $(this);
+            var errorSrc = o.attr('data-src-error');
+
+            if (o.attr('src') != errorSrc) {
+                o.attr('src', errorSrc);
+            }
+        });
+    });
+</script>

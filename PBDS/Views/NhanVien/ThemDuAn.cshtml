@@ -1,0 +1,211 @@
+﻿@model PBDS.Models.DuAn
+
+@{
+    ViewBag.Title = "ThemDuAn";
+    ViewBag.tennhanvien = ViewBag.tennhanvien;
+    Layout = "~/Views/Shared/LayoutNhanVien.cshtml";
+}
+
+<style>
+    textarea {
+        width: 700px;
+        height: 150px;
+    }
+</style>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<script language="javascript" type="text/javascript">
+    function GetQuanHuyen(_IDTinhThanhPho) {
+        var procemessage = "<option value=''>Quận huyện</option>";
+        $("#ddlquanhuyen").html(procemessage).show();
+        var url = "/Home/GetQuanHuyenByIDTinhThanhPho/";
+
+        $.ajax({
+            url: url,
+            data: { IDTinhThanhPho: _IDTinhThanhPho },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value=''>Chọn Quận huyện</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#ddlquanhuyen").html(markup).show();
+            },
+            /*error: function (reponse) {
+                alert("error : " + reponse);
+            }*/
+        });
+    }
+</script>
+
+<script language="javascript" type="text/javascript">
+    function GetPhuongXa(_IDQuanHuyen) {        
+        var procemessage = "<option value=''> Phường Xã</option>";
+        $("#ddlphuongxa").html(procemessage).show();
+        var url = "/NhanVien/GetPhuongXaByIDQuanHuyen/";
+
+        $.ajax({
+            url: url,
+            data: { IDQuanHuyen: _IDQuanHuyen },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value=''>Chọn Phường xã</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#ddlphuongxa").html(markup).show();
+            },
+            /*error: function (reponse) {
+                alert("error : " + reponse);
+            }*/
+        });                
+    }
+</script>
+
+<h2>Thêm Dự án</h2>
+
+@using (Html.BeginForm("ThemDuAn", "NhanVien", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.TenDuAn,"Tên dự án", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.TenDuAn, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TenDuAn, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.IDLoaiDuAn, "Loại dự án", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("IDLoaiDuAn", new SelectList(ViewBag.listloaiduan, "ID", "TenLoaiDuAn"), htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.IDLoaiDuAn, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TinhThanhPho, "Tỉnh thành", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("IDTinhThanhPho", new SelectList(ViewBag.listtinhthanh, "ID", "TenTinhThanhPho"), "Tỉnh thành", htmlAttributes: new { @class = "form-control", @onchange = "javascript:GetQuanHuyen(this.value);javascript:GetPhuongXa(0);" })
+            @Html.ValidationMessageFor(model => model.IDTinhThanhPho, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.IDQuanHuyen, "Quận huyện", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("IDQuanHuyen", new SelectList(ViewBag.listquanhuyen, "ID", "TenQuanHuyen"), "Quận huyện", htmlAttributes: new { @class = "form-control", @onchange = "javascript:GetPhuongXa(this.value);", id = "ddlquanhuyen", name = "ddlquanhuyen" })
+            @Html.ValidationMessageFor(model => model.IDQuanHuyen, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.PhuongXa, "Phường xã", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("IDPhuongXa", new SelectList(ViewBag.listphuongxa, "ID", "TenPhuongXa"), "Phường xã", htmlAttributes: new { @class = "form-control", id = "ddlphuongxa", name = "ddlphuongxa" })
+            @Html.ValidationMessageFor(model => model.IDPhuongXa, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DiaChi, "Địa chỉ", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.DiaChi, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.DiaChi, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DonViPhanPhoi, "Đơn vị phân phối", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.DonViPhanPhoi, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.DonViPhanPhoi, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TongDienTich,"Tổng diện tích", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-sm-6">
+                    @Html.EditorFor(model => model.TongDienTich, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="col-sm-2">
+                    <span class="col-md-2" style="font-size:22px">m²</span>
+                </div>
+            </div>
+            @Html.ValidationMessageFor(model => model.TongDienTich, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.GiaBan, "Giá bán", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-sm-6">
+                    @Html.EditorFor(model => model.GiaBan, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="col-sm-2">
+                    <span class="col-md-2" style="font-size:22px">Triệu/m²</span>
+                </div>
+            </div>
+            @Html.ValidationMessageFor(model => model.GiaBan, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ChuDauTu, "Chủ đầu tư", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ChuDauTu, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ChuDauTu, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.QuyMoDuAn, "Quy mô dự án", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.QuyMoDuAn, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.QuyMoDuAn, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.MatDoXayDung, "Mật độ xây dựng", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.MatDoXayDung, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.MatDoXayDung, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.MoTa, "Mô Tả Thêm", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.MoTa, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.MoTa, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Urlimage,"Hình ảnh", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input type="file" name="image" id="image" style="width:100px;" />
+        </div>
+    </div>
+
+    <div class="form-group" style="margin: auto; width: 50%; border: 3px;color:white; padding: 10px; text-align:center">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Tạo dự án" class="btn btn-success"  onclick="return confirm('Chọn Ok để tạo dự án')"/>
+        </div>
+    </div>
+</div>
+}
+
+
+@section scripts
+{}

@@ -14,13 +14,14 @@ namespace PBDS.Models
     
     public partial class PhiHoaHong
     {
-        public int idhoahong { get; set; }
-        public Nullable<int> sale { get; set; }
-        public Nullable<decimal> tongtien { get; set; }
-        public Nullable<int> nguoitao { get; set; }
-        public Nullable<System.DateTime> ngaytao { get; set; }
+        public int ID { get; set; }
+        public Nullable<double> TongTien { get; set; }
+        public Nullable<int> IDSales { get; set; }
+        public Nullable<int> IDPhanCong { get; set; }
+        public Nullable<System.DateTime> NgayTao { get; set; }
+        public Nullable<System.DateTime> NgayBan { get; set; }
     
-        public virtual NhanVien NhanVien { get; set; }
-        public virtual Sale Sale1 { get; set; }
+        public virtual PhanCong PhanCong { get; set; }
+        public virtual Sale Sale { get; set; }
     }
 }

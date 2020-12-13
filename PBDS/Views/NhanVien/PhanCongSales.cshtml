@@ -1,0 +1,33 @@
+﻿@model PBDS.Models.BatDongSan
+
+<style>
+    .center {
+        display: flex;
+        justify-content: center;
+    }
+
+    .close {
+        font-size: 35px;
+        margin: 5px 10px;
+    }
+</style>
+
+<div style="margin:10px">
+    <h4 style="text-align:center">@Html.DisplayFor(m => m.TenBatDongSan)</h4>
+
+    @using (Html.BeginForm("PhanCong", "NhanVien", FormMethod.Post))
+    {
+        <input name="idbatdongsan" value="@Model.ID" type="hidden" />
+            @Html.LabelFor(model => model.IDLoaiBaiDang, "Nhân viên Sales", htmlAttributes: new { @class = "control-label col-md-6", style = "font-size:18px" })
+            <div class="col-md-10">
+                @Html.DropDownList("idsale", new SelectList(ViewBag.listsales, "ID", "TenSales"), new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IDLoaiBaiDang, "", new { @class = "text-danger" })
+            </div>
+        <div class="center">
+            <input style="font-size:20px; margin:15px" type="submit" class="btn btn-success " value="Phân Công"  onclick="return confirm('Chọn Ok để hoàn tất')"/>
+
+            <button style="font-size:20px; margin:15px" type="button" class="btn btn-danger " data-dismiss="modal">Hủy</button>
+        </div>
+    }
+</div>
+

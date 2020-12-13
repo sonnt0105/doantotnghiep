@@ -1,0 +1,27 @@
+﻿@model IEnumerable<PBDS.Models.DIEM>
+@{
+    /**/
+
+    ViewBag.Title = "Xem Điểm";
+    ViewBag.tennhanvien = ViewBag.tennhanvien;
+    Layout = "~/Views/Shared/LayoutNhanVien.cshtml";
+}
+
+<p style="text-align:center;font-size:40px;"><i>Xem Điểm</i></p>
+    @if (Model.Count() == 0)
+    {
+        <span class="answer-desc">Chưa làm bài kiểm tra nào</span>
+    }
+    else
+    {
+        foreach (var diem in Model)
+        {
+            <li>             
+                <span>Bài thi ngày @diem.NgayThi.ToString(string.Format("dd/MM/yyyy")): @diem.SoDiem/100 Điểm</span>                   
+            </li>
+        }
+    }
+
+
+@section scripts
+{}

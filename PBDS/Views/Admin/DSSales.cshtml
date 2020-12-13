@@ -1,0 +1,142 @@
+﻿@model IEnumerable<PBDS.Models.ESale>
+
+@{
+    ViewBag.Title = "DSSales";
+    Layout = "~/Views/Shared/LayoutAdmin.cshtml";
+}
+
+<style>
+    #grid .k-grid-content {
+        min-height: 404px;
+        max-height: 404px;
+    }
+</style>
+
+<h4>Danh sách Sales</h4>
+
+@(Html.Kendo().Grid<PBDS.Models.ESale>(Model)
+                        .Name("grid")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(p => p.TenSales).Title("Họ tên");
+                            columns.Bound(p => p.Email).Width(200);
+                            columns.Bound(p => p.SoDienThoai).Width(150).Title("Số điện thoại");
+                            columns.Bound(p => p.DiaChi).Width(300).Title("Địa chỉ");
+                            columns.Bound(p => p.ID).Template(cp => "<a href=\"javascript: void(0); \" class=\"sua btn btn-info\" data-id=" + cp.ID + ">SỬA</a> " +
+                                                                            "| <a href=\"javascript: void(0); \" class=\"xoa btn btn-info\" data-id=" + cp.ID + ">XÓA</a>").Width(170).Title("");
+                        })
+                        .ToolBar(toolbar =>
+                                {
+                                toolbar.Template(@<text>
+                                    <div class="refreshBtnContainer">
+                                        <a href="javascript: void(0);" class="themsale btn btn-info">Thêm Sale</a>
+                                    </div>
+                                </text>);
+                                })
+                                .Editable(editable => editable.Mode(GridEditMode.PopUp))
+                                .Pageable()
+                                .Sortable()
+                                .Scrollable()
+                                .HtmlAttributes(new { style = "height:550px;" })
+                                .DataSource(dataSource => dataSource
+                                    .Ajax()
+                                    .ServerOperation(false)
+                                    .Model(model => model.Id(p => p.ID))                                                                                        
+                                )
+)
+<!-- gọi Duyet_partial View-->
+<div id='myModal' class='modal'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+<!-- JS của Duyet_partial View-->
+@section scripts
+{
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <script>
+
+        var URLThemSale = '/Admin/ThemSale';
+        $(function () {
+            $(".themsale").click(function () {                
+                var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: URLThemSale,
+                    contentType: "application/json; charset=utf-8",
+                    datatype: "json",
+                    success: function (data) {
+                        $('#myModalContent').html(data);
+                        $('#myModal').modal(options);
+                        $('#myModal').modal('show');
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+            $("#closbtn").click(function () {
+                $('#myModal').modal('hide');
+            });
+        });
+
+        var URLSuaTTSale = '/Admin/SuaTTSale';
+        $(function () {
+            $(".sua").click(function () {
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: URLSuaTTSale,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "Id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        $('#myModalContent').html(data);
+                        $('#myModal').modal(options);
+                        $('#myModal').modal('show');
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+            $("#closbtn").click(function () {
+                $('#myModal').modal('hide');
+            });
+        });
+
+        var URLXoa = '/Admin/XoaSale';
+        $(function () {
+            $(".xoa").click(function () {
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: URLXoa,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "Id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        $('#myModalContent').html(data);
+                        $('#myModal').modal(options);
+                        $('#myModal').modal('show');
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+            $("#closbtn").click(function () {
+                $('#myModal').modal('hide');
+            });
+        });
+    </script>
+}

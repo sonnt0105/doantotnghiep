@@ -1,0 +1,61 @@
+﻿.home-search {
+    position: absolute;
+    top: 0;
+    left: calc(50% - 475.5px);
+    width: 960px;
+    z-index: 9;
+}
+    .home-search .home-search-tool {
+        margin: 45px auto 0 auto;
+        width: 960px;
+    }
+
+.home-search .home-search-tool .home-search-tab li {
+    display: inline-block;
+    width: 159.33px;
+    height: 20px;
+    border-radius: 5px 5px 0 0;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+    text-transform: uppercase;
+    background: #fff;
+    opacity: .85;
+    color: #777;
+    padding: 12px 0 6px 0;
+}
+search .home-search-tool .home-search-tab li:hover {
+    background: rgba(0,0,0,.65);
+    color: #fff;
+    cursor: pointer;
+}
+.home-search .home-search-tool .home-search-content {
+    background: rgba(0,0,0,.65);
+    box-shadow: 0 4px 4px rgba(0,0,0,.25);
+    border-radius: 0 5px 5px 5px;
+    padding: 9px;
+    width: 942px;
+    margin: 0 auto;
+}
+    .home-search .home-search-tool .home-search-content .home-search-control {
+        background: #fff;
+        border-radius: 3px 5px 5px 3px;
+    }
+        .home-search .home-search-tool .home-search-content .home-search-control .search-cate {
+            float: left;
+            width: 191px;
+            height: 42px;
+            box-sizing: border-box;
+            position: relative;
+            cursor: pointer;
+            border-right: 1px solid #ececec;
+        }
+        .home-search .home-search-tool .home-search-content .home-search-control .search-input {
+            float: left;
+            width: 610px;
+            position: relative;
+        }
+        .home-search .home-search-tool .home-search-content .home-search-control .search-button {
+            float: right;
+            width: 140px;
+        }

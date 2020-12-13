@@ -7,21 +7,12 @@ namespace PBDS.Models
 {
     public class ESale
     {
-        int idsales;
-        string hoten;
-        string email;
-        int sodienthoai;
-        string diachi;
-        int baidang;
-
-        public ESale(int idsales,string hoten,string email, int sodienthoai, string diachi, int baidang)
-        {
-            this.idsales = idsales;
-            this.hoten = hoten;
-            this.email = email;
-            this.sodienthoai = sodienthoai;
-            this.diachi = diachi;
-            this.baidang = baidang;
-        }
+        public int ID { get; set; }
+        public string TenSales { get; set; }
+        public string Email { get; set; }
+        public string SoDienThoai { get; set; }
+        public string DiaChi { get; set; }
+        public string TaiKhoan { get; set; }
+        public string MatKhau { get; set; }
     }
 }

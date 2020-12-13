@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewBag.Title = "Uploads";
+    Layout = "~/Views/Shared/LayoutAdmin.cshtml";
+}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<script language="javascript" type="text/javascript">
+    function GetDiemThi(_DotThi) {
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#ddldiemthi").html(procemessage).show();
+        var url = "/Admin/GetDiemThiByDotThi/";
+
+        $.ajax({
+            url: url,
+            data: { IDTinhThanhPho: _IDTinhThanhPho },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>Tất cả quận huyện</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#ddlquanhuyen").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+    }
+</script>
+
+<h2>Uploads câu hỏi mới</h2>
+
+@using (Html.BeginForm("Uploads", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    if (ViewBag.ErrorMessage != null)
+    {
+        <script type="text/javascript">
+
+    window.onload = function () {
+        alert("@ViewBag.ErrorMessage");
+       };
+        </script>
+    }
+    <table>
+        <tr>
+            <td>File:</td>
+            <td>
+                <input type="file" name="UploadedFile" value="Chọn file"  />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input class="btn btn-info" type="submit" name="Submit" value="Submit" onclick="return confirm('Chọn Ok để Submit');" />
+            </td>
+        </tr>
+    </table>
+}
+<hr />
+<h2>Mở Khóa kiếm tra cho nhân viên và sale</h2>
+@using (Html.BeginForm("ChoKiemTra", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <table>
+        <tr>
+            <td colspan="2">
+                <input class="btn btn-info" type="submit" name="Submit" value="Mở Khóa" onclick="return confirm('Chọn Ok để mở khóa kiểm tra');" />
+            </td>
+        </tr>
+    </table>
+}
+<hr />
+<h2>Bảng điểm</h2>
+@using (Html.BeginForm("ExportToExcel", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <table>
+        <tr>
+            <td colspan="2">
+                <input class="btn btn-info" type="submit" name="Submit" value="Export" />
+            </td>
+        </tr>
+    </table>
+}
+
+
+@section scripts
+{
+
+}

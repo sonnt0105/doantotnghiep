@@ -1,0 +1,103 @@
+﻿@model IEnumerable<PBDS.Models.EBatDongSan>
+
+@{
+    ViewBag.Title = "Editing_Popup";
+    Layout = "~/Views/Shared/LayoutAdmin.cshtml";
+}
+
+<style>
+    #grid .k-grid-content {
+        min-height: 440px;
+        max-height: 440px;
+    }
+</style>
+
+
+
+<h4>Duyệt bài đăng</h4>
+
+@(Html.Kendo().Grid<PBDS.Models.EBatDongSan>(Model)
+                                    .Name("grid")
+                                    .Columns(columns =>
+                                    {
+                                        columns.Bound(p => p.TenBatDongSan).Title("Tên bất động sản").Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
+                                        columns.Bound(p => p.Gia_DonVi).Width(120).Title("Giá").Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
+                                        columns.Bound(p => p.DiaChi).Width(270).Title("Địa chỉ").Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
+                                        columns.Bound(p => p.TenLoaiBaiDang).Width(120).Title("Loại").Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
+                                        columns.Bound(p => p.TenLoaiNhaDat).Width(120).Title("Loại nhà đất").Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
+                                        columns.Bound(p => p.ID).Template(cp => "<a href=\"javascript: void(0); \" class=\"xem btn btn-info\" data-id=" + cp.ID + ">DUYỆT</a>").Width(150).Title("");
+                                    })
+                                    .Pageable()
+                                    .Sortable()
+                                    .Scrollable()
+                                    .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
+                                    .HtmlAttributes(new { style = "height:550px;" })
+                                    .DataSource(dataSource => dataSource
+                                    .Ajax()
+                                    .PageSize(20)
+                                    .ServerOperation(true)
+                                    .Read(read => read.Action("Filter_Row_Orders_Read", "Grid"))
+                                    )
+)
+<!-- gọi Duyet_partial View-->
+<div id='myModal' class='modal'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+<!-- JS của Kendo Grid-->
+<script type="text/javascript">
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            alert(message);
+        }
+    }
+</script>
+<!-- JS của Duyet_partial View-->
+@section scripts
+{    
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <script>
+        var URLXem = '/Admin/Duyet_partial';
+        $(function () {
+            $(".xem").click(function () {
+                debugger;
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: URLXem,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "Id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        debugger;
+                        $('#myModalContent').html(data);
+                        $('#myModal').modal(options);
+                        $('#myModal').modal('show');
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+            $("#closbtn").click(function () {
+                $('#myModal').modal('hide');
+            });
+        });
+    </script>
+}

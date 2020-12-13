@@ -17,12 +17,18 @@ namespace PBDS.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TinhThanhPho()
         {
+            this.BatDongSans = new HashSet<BatDongSan>();
+            this.DuAns = new HashSet<DuAn>();
             this.QuanHuyens = new HashSet<QuanHuyen>();
         }
     
-        public int idtinhthanhpho { get; set; }
-        public string tentinhthanhpho { get; set; }
+        public int ID { get; set; }
+        public string TenTinhThanhPho { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BatDongSan> BatDongSans { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DuAn> DuAns { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QuanHuyen> QuanHuyens { get; set; }
     }

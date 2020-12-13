@@ -1,0 +1,7 @@
+.home-search {
+    position: absolute;
+    top: 0;
+    left: calc(50% - 475.5px);
+    width: 960px;
+    z-index: 9;
+}
