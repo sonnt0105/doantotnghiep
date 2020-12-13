@@ -1,0 +1,428 @@
+﻿@model IEnumerable<PBDS.Models.BatDongSan>
+@{
+    ViewBag.Title = "Trang Chủ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    #backgroundsearch {
+        background-image: url('../../Images/batdongsan4.jpg');
+        background-size: auto;
+        background-size: 1349px 400px;
+    }
+</style>
+
+<link rel="stylesheet" href="https://staticfile.batdongsan.com.vn/css/Product/filestatic.ver202010151221.msvbds.productlisting.min.css" />
+
+<!--ajax get quận huyện từ IDTinhThanhPho-->
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<script language="javascript" type="text/javascript">
+    function GetQuanHuyen(_IDTinhThanhPho) {
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#ddlquanhuyen").html(procemessage).show();
+        var url = "/Home/GetQuanHuyenByIDTinhThanhPho/";
+
+        $.ajax({
+            url: url,
+            data: { IDTinhThanhPho: _IDTinhThanhPho },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>Tất cả quận huyện</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#ddlquanhuyen").html(markup).show();
+            },
+            //error: function (reponse) {
+            //    alert("error : " + reponse);
+            //}
+        });
+    }
+</script>
+
+<script language="javascript" type="text/javascript">
+    function GetDuAn(_IDQuanHuyen) {
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#ddlduan").html(procemessage).show();
+        var url = "/Home/GetDuAnbyIDQuanHuyen/";
+
+        $.ajax({
+            url: url,
+            data: { IDQuanHuyen: _IDQuanHuyen },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>tất cả dự án</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#ddlduan").html(markup).show();
+            },
+            //error: function (reponse) {
+            //    alert("error : " + reponse);
+            //}
+        });
+    }
+</script>
+
+<script language="javascript" type="text/javascript">
+    function GetLoaiNhaDat(_IDLoaiBaiDang) {
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#ddlloainhadat").html(procemessage).show();
+        var url = "/Home/GetLoaiNhaDatByIDLoaiBaiDang/";
+
+        $.ajax({
+            url: url,
+            data: { IDLoaiBaiDang: _IDLoaiBaiDang },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>Tất cả loại nhà đất</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#ddlloainhadat").html(markup).show();
+            },
+            //error: function (reponse) {
+            //    alert("error : " + reponse);
+            //}
+        });
+    }
+</script>
+
+<script language="javascript" type="text/javascript">
+    function GetPhuongXa(_IDQuanHuyen) {
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#ddlphuongxa").html(procemessage).show();
+        var url = "/Home/GetPhuongXaByIDQuanHuyen/";
+
+        $.ajax({
+            url: url,
+            data: { IDQuanHuyen: _IDQuanHuyen },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>Tất cả phường xã</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#ddlphuongxa").html(markup).show();
+            },
+            //error: function (reponse) {
+            //    alert("error : " + reponse);
+            //}
+        });
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        let myBtns = document.querySelectorAll('.buttons_muaban');
+        myBtns.forEach(function (btn) {
+            btn.addEventListener('click', () => {
+                myBtns.forEach(b => b.classList.remove('actived'));
+                btn.classList.add('actived');
+            });
+        });
+    });
+    function change(value) {
+        document.getElementById("type").value = value;
+    }
+</script>
+
+<div class="new-home-2020">
+    <div class="home-center" id="backgroundsearch">
+        <div class="banner-home-slide">
+            @using (Html.BeginForm("TimKiemBaiDang", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <form id="boxSearchForm" action="/microservice-architecture-router/Product/ProductSearch/Index" method="post">
+                    <div class="search-bar shadow-lv-1 clearfix" style="margin:0px;">
+                        <ul class="search-bar-tab mar-left-16 pad-top-8 mar-right-16">
+                            <li class="buttons_muaban actived" onclick="change(1); GetLoaiNhaDat(1);">Bán</li>
+                            <li class="buttons_muaban" onclick="change(2); GetLoaiNhaDat(2);">Cho thuê</li>
+                        </ul>
+                        <input data-val="true" data-val-required="The CateId field is required." id="type" name="IDLoaiBaiDang" type="hidden" value="1" />
+
+                        <div class="search-bar-suggestion pad-top-8 mar-right-16">
+                            <input type="hidden" id="suggestionTemp">
+                            <input id="Keyword" name="Keyword" type="hidden" value="" />
+                            <input type="text" placeholder="Tìm kiếm địa điểm, khu vực" value="" class="search-bar-input" name="searchstring" id="search-suggestion" autocomplete="off" />
+                            <span class="icon-close hiding">
+                                <img src="https://staticfile.batdongsan.com.vn/images/icons/16x16/grey/ic_close.png" />
+                            </span>
+                        </div>
+                        <div id="divCategoryRe" class="select-control select-cate">
+                            <div class="select-control-label">
+                                <div class="">Loại nhà đất</div>
+                            </div>
+                            <div class="form-group">
+                                @Html.DropDownList("IDLoaiNhaDat", new SelectList(ViewBag.listloainhadat, "ID", "TenLoaiNhaDat"), "Tất cả loại nhà đất", new { @class = "form-control", id = "ddlloainhadat", name = "ddlloainhadat" })
+                            </div>
+                        </div>
+                        <div class="select-control city-control">
+                            <div class="select-control-label">
+                                <div class="">Tỉnh Thành</div>
+                            </div>
+                            <div class="form-group">
+                                @Html.DropDownList("IDTinhThanhPho", new SelectList(ViewBag.listtinhthanh, "ID", "TenTinhThanhPho"), new { @class = "form-control", @onchange = "javascript:GetQuanHuyen(this.value); javascript:GetDuAn(this.value);javascript:GetPhuongXa(this.value);" })
+                            </div>
+                        </div>
+
+                        <div class="select-control city-control" aria-label="Bạn hãy chọn tỉnh thành trước" data-microtip-position="top" role="tooltip">
+                            <div class="select-control-label">
+                                <div class="">Quận Huyện</div>
+                            </div>
+                            <div class="form-group">
+                                @Html.DropDownList("IDQuanHuyen", new SelectList(ViewBag.listquanhuyen, "ID", "TenQuanHuyen"), "Tất cả quận huyện", new { @class = "form-control", @onchange = "javascript:GetDuAn(this.value);javascript:GetPhuongXa(this.value);", id = "ddlquanhuyen", name = "ddlquanhuyen" })
+                            </div>
+                        </div>
+
+                        @*<div class="select-control city-control" aria-label="Bạn hãy chọn quận huyện trước" data-microtip-position="top" role="tooltip">
+                            <div class="select-control-label">
+                                <div class="">Phường Xã</div>
+                            </div>
+                            <div class="form-group">
+                                @Html.DropDownList("IDPhuongXa", new SelectList(ViewBag.listphuongxa, "ID", "TenPhuongXa"), "Tất cả Phường xã", new { @class = "form-control", id = "ddlphuongxa", name = "ddlphuongxa" })
+                            </div>
+                        </div>*@
+
+                        <div class="select-control price-control">
+                            <div class="select-control-label">
+                                <div class="">Mức giá</div>
+                            </div>
+                            <div class="price-slider-range ">
+                                <input id="txtPriceMinValue" name="GiaTu" placeholder="Từ...Triệu" class="min-value advance-options"size="13" style="padding:5px 0px; width:115px" maxlength="6" numbersonly="true" decimal="true" type="number" />
+                                <input id="txtPriceMaxValue" name="GiaDen" placeholder="Đến...Triệu" class="max-value advance-options" size="13"style="padding:5px 0px; width:115px" maxlength="6" numbersonly="true" decimal="true" type="number" />
+                            </div>
+                        </div>
+
+                        <div class="select-control project-control" aria-label="Bạn hãy chọn quận huyện trước" data-microtip-position="top" role="tooltip">
+                            <div class="select-control-label">
+                                <div>Dự Án</div>
+                            </div>
+                            <div class="form-group">
+                                @Html.DropDownList("IDDuAn", new SelectList(ViewBag.listduan, "ID", "TenDuAn"), "Tất cả dự án", new { @class = "form-control", id = "ddlduan", name = "ddlduan" })
+                            </div>
+                        </div>
+                        <input type="submit" id="btnSearch" class="btn-blue-7" style=" font-size:17px ;margin:20px 30px 10px 60px;padding:15px 40px 15px 40px ;color:white;" value="Tìm kiếm" />
+                        @*<div id="link-reset"><img src="https://staticfile.batdongsan.com.vn/images/icons/24x24/ic_reset.svg" /><span class="link-reset-tooltip">Xóa tiêu chí lọc</span></div>*@
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+
+
+
+
+    <div class="home-center bg-grey" id="interestedProductsBinnovaContent">
+        <div class="home-product product-4-you">
+            <h2 class="fl">Bất động sản dành cho bạn</h2>
+            <div class="home-more-link">
+                <a href="/Home/NhaDatBan">Tin nhà đất bán mới nhất</a>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <a href="/Home/NhaDatChoThue">Tin nhà đất cho thuê mới nhất</a>
+            </div>
+            <div class="clear"></div>
+            <ul>
+                @foreach (var item in Model)
+                {
+                    <li class="">
+                        <div class="vip5" rel="27198179" uid="1443264">
+                            <div class="product-thumb noimage">
+                                <a title="@item.TenBatDongSan"
+                                   href="@Url.Action("Detail_batdongsan","Home",new {id=item.ID })">
+                                    <img src="/@item.Urlimage">
+                                </a>
+                                <span class="product-feature">
+                                </span>
+                            </div>
+                            <div class="home-product-bound">
+                                <div class="p-title textTitle">
+                                    <a href="@Url.Action("Detail_batdongsan","Home",new {id=item.ID })" title="@item.TenBatDongSan">@item.TenBatDongSan</a>
+                                </div>
+                                <div class="product-price">@item.Gia @item.DonVi.TenDonVi</div>
+                                <span class="ic_dot">·</span>
+                                <div class="pro-m2">@item.DienTich m²</div>
+                                <div class="product-address">    
+                                        <a href="@Url.Action("TimKiemBaiDang","Home",new {IDQuanHuyen=item.IDQuanHuyen })" title="@item.QuanHuyen.TenQuanHuyen">@item.QuanHuyen.TenQuanHuyen.Replace("Thành phố", "").Replace("Thị xã", "").Replace("Quận", "")</a>,
+                                        <a href="@Url.Action("TimKiemBaiDang","Home",new {IDTinhThanhPho=item.QuanHuyen.IDTinhThanhPho })" title="@item.QuanHuyen.TinhThanhPho.TenTinhThanhPho">@item.QuanHuyen.TinhThanhPho.TenTinhThanhPho.Replace("Tỉnh","")</a>
+                                </div>
+                                <div class="product-date">
+                                    <span >@item.NgayDang.ToString(string.Format("dd/MM/yyyy"))</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                }
+                @foreach (var item in ViewBag.batdongsan2)
+                {
+                    <li class="hide-item">
+                        <div class="vip5" rel="27198179" uid="1443264">
+                            <div class="product-thumb noimage">
+                                <a title="@item.TenBatDongSan"
+                                   href="@Url.Action("Detail_batdongsan","Home",new {id=item.ID })">
+                                    <img src="~/@item.Urlimage" alt="@item.TenBatDongSan">
+                                </a>
+                                <span class="product-feature">
+                                </span>
+                            </div>
+                            <div class="home-product-bound">
+                                <div class="p-title textTitle">
+                                    <a href="@Url.Action("Detail_batdongsan","Home",new {id=item.ID })" title="@item.TenBatDongSan">@item.TenBatDongSan</a>
+                                </div>
+                                <div class="product-price">@item.Gia @item.DonVi.TenDonVi</div>
+                                <span class="ic_dot">·</span>
+                                <div class="pro-m2">@item.DienTich m²;</div>
+                                <div class="product-address">
+                                    <a href="@Url.Action("TimKiemBaiDang","Home",new {IDQuanHuyen=item.IDQuanHuyen })" title="@item.QuanHuyen.TenQuanHuyen">@item.QuanHuyen.TenQuanHuyen.Replace("Thành phố", "").Replace("Thị xã", "").Replace("Quận", "")</a>,
+                                    <a href="@Url.Action("TimKiemBaiDang","Home",new {IDTinhThanhPho=item.QuanHuyen.IDTinhThanhPho })" title="@item.QuanHuyen.TinhThanhPho.TenTinhThanhPho">@item.QuanHuyen.TinhThanhPho.TenTinhThanhPho.Replace("Tỉnh", "")</a>
+                                </div>
+                                <div class="product-date">
+                                    H&#xF4;m nay
+                                    <span class="tooltip-time">@item.NgayDang</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                }
+            </ul>
+            <div class="clear"></div>
+            <div id="ucHomeProductInterest_pnlViewMore">
+                <div class="home-viewmore">
+                    <a href="javascript:void(0)" id="prd-viewmore" onclick="Xemthem()">
+                        Mở rộng <img src="https://file4.batdongsan.com.vn/images/newhome/icon-down-blue.png">
+                    </a>
+                    <a href="/Home/NhaDatBan" id="prd-viewless" class="hidden">
+                        Xem tiếp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function Xemthem() {
+            document.getElementById("prd-viewmore").style.display = "none";
+            document.getElementById("prd-viewless").style.display = "inline";
+            var x, i;
+            x = document.querySelectorAll(".hide-item");
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "block";
+            }
+        }
+    </script>
+
+    <div class="home-small">
+        <div class="home-product-place">
+
+            <h2>Bất động sản theo địa điểm</h2>
+            <div>
+                <div class="place-big">
+                    <div class="place-img">
+                        <img src="https://file4.batdongsan.com.vn/images/newhome/cities1/HCM-web-2.jpg" src-lazy="https://file4.batdongsan.com.vn/images/newhome/cities1/HCM-web-2.jpg" is-lazy-image="true" />
+
+                    </div>
+                    <div class="place-info buy-info">
+                        <h3>
+                            <a href="@Url.Action("TimKiemBaiDang","Home",new {IDTinhThanhPho= 140 })">
+                                <span class="place-name">TP. Hồ Chí Minh</span>
+                                <span class="place-number">@ViewBag.tdtphcm tin đăng</span>
+                            </a>
+                        </h3>
+                    </div>
+                </div>
+                <div class="place-small">
+                    <div class="place-item">
+                        <div class="place-img">
+                            <img src="https://file4.batdongsan.com.vn/images/newhome/cities1/HN-web-1.jpg" src-lazy="https://file4.batdongsan.com.vn/images/newhome/cities1/HN-web-1.jpg" is-lazy-image="true" />
+
+                        </div>
+                        <div class="place-info buy-info">
+                            <h3>
+                                <a href="@Url.Action("TimKiemBaiDang","Home",new {IDTinhThanhPho= 1 })">
+                                    <span class="place-name">Hà Nội</span>
+                                    <span class="place-number">@ViewBag.tdtphanoi tin đăng</span>
+                                </a>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="place-item">
+                        <div class="place-img">
+                            <img src="https://file4.batdongsan.com.vn/images/newhome/cities1/DDN-web-1.jpg" src-lazy="https://file4.batdongsan.com.vn/images/newhome/cities1/DDN-web-1.jpg" is-lazy-image="true" />
+                        </div>
+                        <div class="place-info buy-info">
+                            <h3>
+                                <a href="@Url.Action("TimKiemBaiDang","Home",new {IDTinhThanhPho= 4 })">
+                                    <span class="place-name">Đà Nẵng</span>
+                                    <span class="place-number">@ViewBag.tdtpdanang tin đăng</span>
+                                </a>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="place-item nomargin">
+                        <div class="place-img">
+                            <img src="https://file4.batdongsan.com.vn/images/newhome/cities1/BD-web-1.jpg" src-lazy="https://file4.batdongsan.com.vn/images/newhome/cities1/BD-web-1.jpg" is-lazy-image="true" />
+                        </div>
+                        <div class="place-info buy-info">
+                            <h3>
+                                <a href="@Url.Action("TimKiemBaiDang","Home",new {IDTinhThanhPho= 77 })">
+                                    <span class="place-name">Bình Dương</span>
+                                    <span class="place-number">@ViewBag.tdtpbinhduong tin đăng</span>
+                                </a>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="place-item nomargin">
+                        <div class="place-img">
+                            <img src="https://file4.batdongsan.com.vn/images/newhome/cities1/DNA-web-1.jpg" src-lazy="https://file4.batdongsan.com.vn/images/newhome/cities1/DNA-web-1.jpg" is-lazy-image="true" />
+                        </div>
+                        <div class="place-info buy-info">
+                            <h3>
+                                <a href="@Url.Action("TimKiemBaiDang","Home",new {IDTinhThanhPho= 96 })">
+                                    <span class="place-name">Đồng Nai</span>
+                                    <span class="place-number">@ViewBag.tdtinhdongnai tin đăng</span>
+                                </a>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+
+        <div class="home-project">
+            <h2 class="fl">Dự án nổi bật</h2>
+            <div class="home-more-link">
+                <a href="/Home/DuAn">Xem thêm <img src="https://file4.batdongsan.com.vn/images/newhome/3x/icon-arrow-right.png" /></a>
+            </div>
+            <div class="clear"></div>
+            <div class="swiper-container">
+                <ul class="swiper-wrapper">
+                    @foreach (var item in ViewBag.listduannoibat)
+                    {
+                        <li class="swiper-slide">
+                            <a href="@Url.Action("Detail_duan","Home",new {ID = item.ID })" title="@item.TenDuAn">
+                                <img alt="@item.TenDuAn" noloaderror="true" imgerr="2" src="~/@item.Urlimage" is-lazy-image="true" />@item.TenDuAn
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
+        <script src="https://staticfile.batdongsan.com.vn/js/binnova/filestatic.ver202010290635.msvbds.jquery.tabslet.jscompress.js"></script>
+        <script src="https://staticfile.batdongsan.com.vn/js/binnova/filestatic.ver202010290636.msvbds.FrontEnd.Home.min.js"></script>
+        <script type="text/javascript">
+            (function callJQuery() {
+                if (window.FrontEnd && window.FrontEnd.Home && window.FrontEnd.Home.HighlightProjectsBinnova) {
+                    new window.FrontEnd.Home.HighlightProjectsBinnova();
+                } else
+                    setTimeout(callJQuery, 100)
+            })();
+        </script>
+
+    </div>
+</div>

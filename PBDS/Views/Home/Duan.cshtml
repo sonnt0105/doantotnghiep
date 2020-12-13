@@ -1,0 +1,309 @@
+﻿@model IEnumerable<PBDS.Models.EDuAn>
+
+@{
+    ViewBag.Title = "Dự án";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    li {
+        float: left;
+    }
+</style>
+
+<link rel="stylesheet" href="https://staticfile.batdongsan.com.vn/css/filestatic.ver202010290636.msvbds.FrontEnd.min.css" />
+
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<script language="javascript" type="text/javascript">
+    function GetQuanHuyen(_IDTinhThanhPho) {
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#ddlquanhuyen").html(procemessage).show();
+        var url = "/Home/GetQuanHuyenByIDTinhThanhPho/";
+
+        $.ajax({
+            url: url,
+            data: { IDTinhThanhPho: _IDTinhThanhPho },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>Tất cả quận huyện</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#ddlquanhuyen").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+    }
+</script>
+
+<script>
+    function displaykhunghiduong() {
+        document.getElementById("khunghiduong").style.display = "block";
+        document.getElementById("khucongnghiep").style.display = "none";
+        document.getElementById("khuchungcu").style.display = "none";
+    }
+    function displaykhucongnghiep() {
+        document.getElementById("khunghiduong").style.display = "none";
+        document.getElementById("khucongnghiep").style.display = "block";
+        document.getElementById("khuchungcu").style.display = "none";
+    }
+    function displaykhuchungcu() {
+        document.getElementById("khunghiduong").style.display = "none";
+        document.getElementById("khucongnghiep").style.display = "none";
+        document.getElementById("khuchungcu").style.display = "block";
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        let myBtns = document.querySelectorAll('.loaiduan');
+        myBtns.forEach(function (btn) {
+            btn.addEventListener('click', () => {
+                myBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+    });
+    function change(value) {
+        document.getElementById("type").value = value;
+    }
+</script>
+
+
+<div class="site-center">
+    <link rel="stylesheet" href="https://staticfile.batdongsan.com.vn/css/project.css" />
+    <link rel="stylesheet" href="https://staticfile.batdongsan.com.vn/css/excoloSlider.css" />
+    <div class="clear"></div>
+    @using (Html.BeginForm("TimKiemDuAn", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="prj-top-search">
+            <div class="col1">
+                <div>Tìm kiếm dự án</div>
+            </div>
+            <div class="col2">
+                <div style="position: relative;">
+                    <input type="text" id="txtAutoComplete" class="suggest" placeholder="Nhập từ khóa tìm kiếm" value="" name="searchstring">
+                </div>
+                <input type="hidden" name="hddProjectId" id="hddProjectId" />
+                <div id="searchcontrol" style="display: block;">
+                    <div id="divCategory" class="comboboxs advance-select-box mr10" style="">
+                        <input data-val="true" data-val-required="The CateId field is required." id="hdCateId" name="CateId" type="hidden" value="351" />
+                        @Html.DropDownList("IDLoaiDuAn", new SelectList(ViewBag.listloaiduan, "ID", "TenLoaiDuAn"), " Tất cả loại dự án", htmlAttributes: new { @class = "form-control" })
+                    </div>
+
+                    <div id="divCity" class="comboboxs advance-select-box mr10" style="">
+                        @Html.DropDownList("IDTinhThanhPho", new SelectList(ViewBag.listtinhthanh, "ID", "TenTinhThanhPho"), htmlAttributes: new { @class = "form-control", @onchange = "javascript:GetQuanHuyen(this.value);" })
+                    </div>
+
+                    <div id="divDistrict" class="comboboxs advance-select-box mr10" style="">
+                        @Html.DropDownList("IDQuanHuyen", new SelectList(ViewBag.listquanhuyen, "ID", "TenQuanHuyen"), "Tất cả Quận huyện", htmlAttributes: new { @class = "form-control", id = "ddlquanhuyen", name = "ddlquanhuyen" })
+                    </div>
+                </div>
+            </div>
+            <div class="col3">
+                <input type="submit" value="Tìm kiếm" class="search" id="btnSearch">
+            </div>
+            <div class="clear"></div>
+
+        </div>
+    }
+    <div class="prj-inline">
+        <div class="header">
+            <div class="col1">&nbsp;</div>
+            <div class="col2">
+                <h2 class="name">Dự án mới cập nhật</h2>
+            </div>
+            <div class="col1">&nbsp;</div>
+            <div class="clear"></div>
+        </div>
+        <div class="prj-items prj-latest">
+            <ul>
+                @foreach (var item in Model)
+                {
+                    <li>
+                        <div>
+                            <a href="@Url.Action("Detail_duan","Home",new {id=item.ID })" title="@item.TenDuAn">
+                                <img src="~/@item.Urlimage" alt="@item.TenDuAn" class="img230">
+                            </a>
+                        </div>
+                        <div class="below-img">
+                            <h3 class="prj-name">
+                                <a href="@Url.Action("Detail_duan","Home",new {id=item.ID })" title="@item.TenDuAn">
+                                    @item.TenDuAn
+                                </a>
+                            </h3>
+                            <div class="prj-add">@item.TenPhuongXa @item.TenQuanHuyen, @item.TenTinhThanh</div>
+                            @if (item.GiaBan == 0 || item.GiaBan == null)
+                            {
+                                <div class="m-t-5">Giá từ: <span><strong>Đang cập nhật</strong></span></div>
+                            }
+                            else
+                            {
+                                <div class="m-t-5">Giá từ: <span><strong>@item.GiaBan triệu/m²</strong></span></div>
+                            }
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+
+    <div style="clear: both;"></div>
+    <div class="">
+        <div class="container-default">
+            <div>
+                <div class="prj-top-by-cate">
+                    <ul>
+                        <li class="loaiduan active" id="158" onclick="displaykhunghiduong()">
+                            <h2>
+                                <a class="top-cate-header" href="javascript:void(0)" title="Khu ngh&#x1EC9; d&#x1B0;&#x1EE1;ng, Sinh th&#xE1;i" data-id="158">
+                                    <span style="white-space: nowrap;">Khu ngh&#x1EC9; d&#x1B0;&#x1EE1;ng, Sinh th&#xE1;i</span>
+                                </a>
+                            </h2>
+                        </li>
+                        <li class="loaiduan" id="159" onclick="displaykhucongnghiep()">
+                            <h2>
+                                <a class="top-cate-header" href="javascript:void(0)" title="Khu c&#xF4;ng nghi&#x1EC7;p" data-id="159">
+                                    <span style="white-space: nowrap;">Khu c&#xF4;ng nghi&#x1EC7;p</span>
+                                </a>
+                            </h2>
+                        </li>
+                        <li class="loaiduan" id="155" onclick="displaykhuchungcu()">
+                            <h2>
+                                <a class="top-cate-header" href="javascript:void(0)" title="C&#x103;n h&#x1ED9;, Chung c&#x1B0;" data-id="155">
+                                    <span style="white-space: nowrap;">C&#x103;n h&#x1ED9;, Chung c&#x1B0;</span>
+                                </a>
+                            </h2>
+                        </li>
+                    </ul>
+                </div>
+                <div class="prj-top-by-content">
+                    <div class="content_158 prjcontent" id="khunghiduong" style="display: block">
+                        <ul>
+                            @foreach (var item in ViewBag.listduankhunghiduongsinhthai)
+                            {
+                                <li>
+                                    <div>
+                                        <div class="thumb">
+                                            <a href="@Url.Action("Detail_duan","Home",new {id=item.ID })" title="@item.TenDuAn">
+                                                <img src="~/@item.Urlimage" class="bor-none" alt="@item.TenDuAn" />
+                                            </a>
+                                        </div>
+                                        <div class="infor">
+                                            <h3>
+                                                <strong>
+                                                    <a href="@Url.Action("Detail_duan","Home",new {id=item.ID })" title="@item.TenDuAn">@item.TenDuAn</a>
+                                                </strong>
+                                            </h3>
+                                            <div>
+                                                <span class="col-1" style="padding:0px 5px 0px 0px;">Địa chỉ: </span>
+                                                <p>@item.DiaChi</p>
+                                            </div>
+                                            <div>                                                
+                                                @if (item.GiaBan == 0 || item.GiaBan == null)
+                                                {
+                                                    <span class="col-1" style="padding:0px 5px 0px 0px;">Giá từ: </span>
+                                                    <span class="price">Đang cập nhật</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="col-1" style="padding:0px 5px 0px 0px;">Giá từ: </span>
+                                                    <span class="price">@item.GiaBan triệu/m²</span>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clear"></div>
+                                </li>
+                            }                            
+                        </ul>
+                    </div>
+                    <div class="content_159 prjcontent" id="khucongnghiep" style="display: none">
+                        <ul>
+                            @foreach (var item in ViewBag.listduankhucongnghiep)
+                            {
+                            <li>
+                                <div>
+                                    <div class="thumb">
+                                        <a href="@Url.Action("Detail_duan","Home",new {id=item.ID })" title="@item.TenDuAn">
+                                            <img src="~/@item.Urlimage" class="bor-none" alt="@item.TenDuAn" />
+                                        </a>
+                                    </div>
+                                    <div class="infor">
+                                        <h3>
+                                            <strong>
+                                                <a href="@Url.Action("Detail_duan","Home",new {id=item.ID })" title="@item.TenDuAn">@item.TenDuAn</a>
+                                            </strong>
+                                        </h3>
+                                        <div>
+                                            <span class="col-1" style="padding:0px 5px 0px 0px;">Địa chỉ: </span>
+                                            <p>@item.DiaChi</p>
+                                        </div>
+                                        <div>
+                                            @if (item.GiaBan == 0 || item.GiaBan == null)
+                                            {
+                                                <span class="col-1" style="padding:0px 5px 0px 0px;">Giá từ: </span>
+                                                <span class="price">Đang cập nhật</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="col-1" style="padding:0px 5px 0px 0px;">Giá từ: </span>
+                                                <span class="price">@item.GiaBan triệu/m²</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                            </li>
+                            }                            
+                        </ul>
+                    </div>
+                    <div class="content_155 prjcontent" id="khuchungcu" style="display: none">
+                        <ul>
+                            @foreach (var item in ViewBag.listduancanhochungcu)
+                            {
+                                <li>
+                                    <div>
+                                        <div class="thumb">
+                                            <a href="@Url.Action("Detail_duan","Home",new {id=item.ID })" title="@item.TenDuAn">
+                                                <img src="~/@item.Urlimage" class="bor-none" alt="@item.TenDuAn" />
+                                            </a>
+                                        </div>
+                                        <div class="infor">
+                                            <h3>
+                                                <strong>
+                                                    <a href="@Url.Action("Detail_duan","Home",new {id=item.ID })" title="@item.TenDuAn">@item.TenDuAn</a>
+                                                </strong>
+                                            </h3>
+                                            <div>
+                                                <span class="col-1" style="padding:0px 5px 0px 0px;">Địa chỉ: </span>
+                                                <p>@item.DiaChi</p>
+                                            </div>
+                                            <div>
+                                                @if (item.GiaBan == 0 || item.GiaBan == null)
+                                                {
+                                                    <span class="col-1" style="padding:0px 5px 0px 0px;">Giá từ: </span>
+                                                    <span class="price">Đang cập nhật</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="col-1" style="padding:0px 5px 0px 0px;">Giá từ: </span>
+                                                    <span class="price">@item.GiaBan triệu/m²</span>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clear"></div>
+                                </li>
+                            }                            
+                        </ul>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+﻿@model PBDS.Models.DuAn
+
+<style>    
+    .center {
+        display: flex;
+        justify-content: center;
+    }
+
+    .close {
+        font-size: 35px;
+        margin: 5px 10px;
+    }
+</style>
+
+<div>
+    <div class="modal-header">
+        <h4 >@Model.TenDuAn</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    </div>
+    <hr />
+    <img src="~/@Html.DisplayFor(model => model.Urlimage)" alt="Không có hình ảnh" width="300" height="180" />
+
+    <p><b>@Html.DisplayName("Tên dự án")</b> : @Model.TenDuAn</p>
+
+    <p><b>@Html.DisplayName("Tên loại dự án")</b> : @Model.LoaiDuAn.TenLoaiDuAn</p>
+
+    @if (Model.DonViPhanPhoi != null)
+    {
+        <p><b>@Html.DisplayName("Đơn vị phân phối")</b> : @Model.DonViPhanPhoi</p>
+    }
+
+    @if (Model.TongDienTich != null)
+    {
+        <p><b>@Html.DisplayName("Tổng diện tích")</b> : @Model.TongDienTich m<sup>2</sup></p>
+    }
+
+    @if (Model.GiaBan != null)
+    {
+        <p><b>@Html.DisplayName("Giá bán")</b> : @Model.GiaBan Triệu/m<sup>2</sup></p>
+    }
+
+    @if (Model.ChuDauTu != null)
+    {
+        <p><b>@Html.DisplayName("Chủ đầu tư")</b> : @Model.ChuDauTu</p>
+    }
+
+    @if (Model.QuyMoDuAn != null)
+    {
+        <p><b>@Html.DisplayName("Quy mô dự án")</b> : @Model.QuyMoDuAn</p>
+    }
+
+    @if (Model.MatDoXayDung != null)
+    {
+        <p><b>@Html.DisplayName("Mật độ xây dựng")</b> : @Model.MatDoXayDung</p>
+    }
+
+    <div style="white-space: pre-line">
+        <p><b>@Html.DisplayName("Mô tả")</b> : @Model.MoTa.Replace("<br />", Environment.NewLine))</p>
+    </div>
+
+    <p><b>@Html.DisplayName("Ngày Đăng")</b> : @Model.NgayDang.ToString(string.Format("dd/MM/yyyy"))</p>
+
+    <p><b>Địa chỉ</b> : @Model.DiaChi</p>
+
+</div>
+<div class="center">
+    <button style="padding:10px 50px 10px 50px;margin:15px;" type="button" class="btn btn-success " data-dismiss="modal">OK</button>
+</div>
+
+

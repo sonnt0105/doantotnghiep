@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="8c691a5b3cfa4c36aae320749afbc729" Name="Diagram1">
+        <EntityTypeShape EntityType="BATDONGSANModel.Admin" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BATDONGSANModel.BatDongSan" Width="1.5" PointX="7.5" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BATDONGSANModel.CauHoi" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="BATDONGSANModel.DIEM" Width="1.5" PointX="9.75" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BATDONGSANModel.DonVi" Width="1.5" PointX="5.25" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BATDONGSANModel.DuAn" Width="1.5" PointX="10.5" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="BATDONGSANModel.LoaiBaiDang" Width="1.5" PointX="3" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BATDONGSANModel.LoaiDuAn" Width="1.5" PointX="8.25" PointY="22.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="BATDONGSANModel.LoaiNhaDat" Width="1.5" PointX="5.25" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="BATDONGSANModel.NhanVien" Width="1.5" PointX="7.5" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BATDONGSANModel.PhanCong" Width="1.5" PointX="9.75" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BATDONGSANModel.PhiHoaHong" Width="1.5" PointX="12" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BATDONGSANModel.PhuongXa" Width="1.5" PointX="5.25" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BATDONGSANModel.QuanHuyen" Width="1.5" PointX="3" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BATDONGSANModel.Sale" Width="1.5" PointX="7.5" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="BATDONGSANModel.TinhThanhPho" Width="1.5" PointX="0.75" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BATDONGSANModel.TraLoi" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <AssociationConnector Association="BATDONGSANModel.FK__BatDongSa__IDDon__300424B4" ManuallyRouted="false" />
+        <AssociationConnector Association="BATDONGSANModel.FK__BatDongSa__IDDuA__32E0915F" ManuallyRouted="false" />
+        <AssociationConnector Association="BATDONGSANModel.FK__BatDongSa__IDLoa__30F848ED" ManuallyRouted="false" />
+        <AssociationConnector Association="BATDONGSANModel.FK__BatDongSa__IDLoa__31EC6D26" ManuallyRouted="false" />
+        <AssociationConnector Association="BATDONGSANModel.FK__BatDongSa__IDPhu__2E1BDC42" ManuallyRouted="false" />
+        <AssociationConnector Association="BATDONGSANModel.FK__BatDongSa__IDQua__2D27B809" ManuallyRouted="false" />
+        <AssociationConnector Association="BATDONGSANModel.FK__BatDongSa__IDTin__2F10007B" ManuallyRouted="false" />
+        <AssociationConnector Association="BATDONGSANModel.FK__PhanCong__IDBatD__35BCFE0A" ManuallyRouted="false" />
+        <AssociationConnector Association="BATDONGSANModel.FK__TraLoi__IDCauHoi__4316F928" ManuallyRouted="false" />
+        <AssociationConnector Association="BATDONGSANModel.FK__DIEM__IDNhanVien__3D5E1FD2" ManuallyRouted="false" />
+        <AssociationConnector Association="BATDONGSANModel.FK__DIEM__IDSale__3E52440B" ManuallyRouted="false" />
+        <AssociationConnector Association="BATDONGSANModel.FK__DonVi__IDLoaiBai__2A4B4B5E" ManuallyRouted="false" />
+        <AssociationConnector Association="BATDONGSANModel.FK__DuAn__IDLoaiDuAn__276EDEB3" ManuallyRouted="false" />
+        <AssociationConnector Association="BATDONGSANModel.FK__DuAn__IDPhuongXa__25869641" ManuallyRouted="false" />
+        <AssociationConnector Association="BATDONGSANModel.FK__DuAn__IDQuanHuye__24927208" ManuallyRouted="false" />
+        <AssociationConnector Association="BATDONGSANModel.FK__DuAn__IDTinhThan__267ABA7A" ManuallyRouted="false" />
+        <AssociationConnector Association="BATDONGSANModel.FK__LoaiNhaDa__IDLoa__1BFD2C07" ManuallyRouted="false" />
+        <AssociationConnector Association="BATDONGSANModel.FK__PhanCong__IDSale__36B12243" ManuallyRouted="false" />
+        <AssociationConnector Association="BATDONGSANModel.FK__PhiHoaHon__IDPha__3A81B327" ManuallyRouted="false" />
+        <AssociationConnector Association="BATDONGSANModel.FK__PhiHoaHon__IDSal__398D8EEE" ManuallyRouted="false" />
+        <AssociationConnector Association="BATDONGSANModel.FK__PhuongXa__IDQuan__173876EA" ManuallyRouted="false" />
+        <AssociationConnector Association="BATDONGSANModel.FK__QuanHuyen__IDTin__145C0A3F" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

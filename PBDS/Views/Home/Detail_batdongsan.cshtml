@@ -1,0 +1,339 @@
+﻿@model PBDS.Models.BatDongSan
+
+
+@{
+    ViewBag.Title = "Chi tiết bất động sản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<link rel="stylesheet" href="https://staticfile.batdongsan.com.vn/css/Product/Binnova/Details/filestatic.ver202010290634.msvbds.FrontEnd.Product.ProductDetails.min.css" />
+
+<link rel="stylesheet" href="https://staticfile.batdongsan.com.vn/css/Product/filestatic.ver202010151221.msvbds.productlisting.min.css" />
+
+<!--ajax get quận huyện từ IDTinhThanhPho-->
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<script language="javascript" type="text/javascript">
+    function GetQuanHuyen(_IDTinhThanhPho) {
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#ddlquanhuyen").html(procemessage).show();
+        var url = "/Home/GetQuanHuyenByIDTinhThanhPho/";
+
+        $.ajax({
+            url: url,
+            data: { IDTinhThanhPho: _IDTinhThanhPho },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>Tất cả quận huyện</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#ddlquanhuyen").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+    }
+</script>
+
+<script language="javascript" type="text/javascript">
+    function GetDuAn(_IDQuanHuyen) {
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#ddlduan").html(procemessage).show();
+        var url = "/Home/GetDuAnbyIDQuanHuyen/";
+
+        $.ajax({
+            url: url,
+            data: { IDQuanHuyen: _IDQuanHuyen },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>tất cả dự án</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#ddlduan").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+    }
+</script>
+
+<script language="javascript" type="text/javascript">
+    function GetLoaiNhaDat(_IDLoaiBaiDang) {
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#ddlloainhadat").html(procemessage).show();
+        var url = "/Home/GetLoaiNhaDatByIDLoaiBaiDang/";
+
+        $.ajax({
+            url: url,
+            data: { IDLoaiBaiDang: _IDLoaiBaiDang },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>Tất cả loại nhà đất</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#ddlloainhadat").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+    }
+</script>
+
+<script language="javascript" type="text/javascript">
+    function GetPhuongXa(_IDQuanHuyen) {
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#ddlphuongxa").html(procemessage).show();
+        var url = "/Home/GetPhuongXaByIDQuanHuyen/";
+
+        $.ajax({
+            url: url,
+            data: { IDQuanHuyen: _IDQuanHuyen },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>Tất cả phường xã</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#ddlphuongxa").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        let myBtns = document.querySelectorAll('.buttons_muaban');
+        myBtns.forEach(function (btn) {
+            btn.addEventListener('click', () => {
+                myBtns.forEach(b => b.classList.remove('actived'));
+                btn.classList.add('actived');
+            });
+        });
+    });
+    function change(value) {
+        document.getElementById("type").value = value;
+    }
+</script>
+
+
+
+@using (Html.BeginForm("TimKiemBaiDang", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <form id="boxSearchForm" action="/microservice-architecture-router/Product/ProductSearch/Index" method="post">
+        <div class="search-bar shadow-lv-1 clearfix">
+            <ul class="search-bar-tab mar-left-16 pad-top-8 mar-right-16">
+                <li class="buttons_muaban actived" onclick="change(1); GetLoaiNhaDat(1);">Bán</li>
+                <li class="buttons_muaban" onclick="change(2); GetLoaiNhaDat(2);">Cho thuê</li>
+            </ul>
+            <input data-val="true" data-val-required="The CateId field is required." id="type" name="IDLoaiBaiDang" type="hidden" value="1" />
+
+            <div class="search-bar-suggestion pad-top-8 mar-right-16">
+                <input type="hidden" id="suggestionTemp">
+                <input id="Keyword" name="Keyword" type="hidden" value=""/>
+                <input type="text" placeholder="Tìm kiếm địa điểm, khu vực" value="" class="search-bar-input" name="searchstring" id="search-suggestion" autocomplete="off" />
+                <span class="icon-close hiding">
+                    <img src="https://staticfile.batdongsan.com.vn/images/icons/16x16/grey/ic_close.png" />
+                </span>
+            </div>
+            <div id="divCategoryRe" class="select-control select-cate">
+                <div class="select-control-label">
+                    <div class="">Loại nhà đất</div>
+                </div>
+                <div class="form-group">
+                    @Html.DropDownList("IDLoaiNhaDat", new SelectList(ViewBag.listloainhadat, "ID", "TenLoaiNhaDat"), new { @class = "form-control", id = "ddlloainhadat", name = "ddlloainhadat" })
+                </div>
+            </div>
+            <div class="select-control city-control">
+                <div class="select-control-label">
+                    <div class="">Tỉnh Thành</div>
+                </div>
+                <div class="form-group">
+                    @Html.DropDownList("IDTinhThanhPho", new SelectList(ViewBag.listtinhthanh, "ID", "TenTinhThanhPho"), new { @class = "form-control", @onchange = "javascript:GetQuanHuyen(this.value); javascript:GetDuAn(this.value);javascript:GetPhuongXa(0);" })
+                </div>
+            </div>
+
+            <div class="select-control city-control" aria-label="Bạn hãy chọn tỉnh thành trước" data-microtip-position="top" role="tooltip">
+                <div class="select-control-label">
+                    <div class="">Quận Huyện</div>
+                </div>
+                <div class="form-group">
+                    @Html.DropDownList("IDQuanHuyen", new SelectList(ViewBag.listquanhuyen, "ID", "TenQuanHuyen"), new { @class = "form-control", @onchange = "javascript:GetDuAn(this.value);javascript:GetPhuongXa(this.value);", id = "ddlquanhuyen", name = "ddlquanhuyen" })
+                </div>
+            </div>            
+
+            <div class="select-control price-control">
+                <div class="select-control-label">
+                    <div class="">Mức giá</div>
+                </div>
+                <div class="price-slider-range ">
+                    <input id="txtPriceMinValue" name="GiaTu" placeholder="Từ...Triệu" class="min-value advance-options" size="13" style="padding:5px 0px; width:115px" maxlength="6" numbersonly="true" decimal="true" type="number" />
+                    <input id="txtPriceMaxValue" name="GiaDen" placeholder="Đến...Triệu" class="max-value advance-options" size="13" style="padding:5px 0px; width:115px" maxlength="6" numbersonly="true" decimal="true" type="number" />
+                </div>
+            </div>
+
+            <div class="select-control project-control" aria-label="Bạn hãy chọn quận huyện trước" data-microtip-position="top" role="tooltip">
+                <div class="select-control-label">
+                    <div>Dự Án</div>
+                </div>
+                <div class="form-group">
+                    @Html.DropDownList("IDDuAn", new SelectList(ViewBag.listduan, "ID", "TenDuAn"), "Tất cả dự án", new { @class = "form-control", id = "ddlduan", name = "ddlduan" })
+                </div>
+            </div>
+            <input type="submit" id="btnSearch" class="btn-blue-7" style=" font-size:17px ;margin:15px 30px 10px 60px;padding:15px 40px 15px 40px ;color:white;" value="Tìm kiếm" />
+            @*<div id="link-reset"><img src="https://staticfile.batdongsan.com.vn/images/icons/24x24/ic_reset.svg" /><span class="link-reset-tooltip">Xóa tiêu chí lọc</span></div>*@
+        </div>
+    </form>
+}
+
+
+
+<div class="main-container clearfix">
+    <div class="main-left">
+        <section class="product-detail">
+
+            <img class="img-responsive" data-src-error="/Images/no-image.png" src="/@Model.Urlimage" height="450" width="695" style="border-radius: 5px;" />
+
+
+            <div class="breadcrumb all-grey-7 link-hover-blue">
+                <a href="@Url.Action("TimKiemBaiDang","Home",new {IDLoaiBaiDang= Model.IDLoaiBaiDang })" title="@Model.LoaiBaiDang.TenLoaiBaiDang">@Model.LoaiBaiDang.TenLoaiBaiDang</a><span>/</span><a href="@Url.Action("TimKiemBaiDang","Home",new {IDLoaiNhaDat= Model.IDLoaiNhaDat,IDQuanHuyen = Model.IDQuanHuyen }) " title="@Model.LoaiNhaDat.TenLoaiNhaDat @Model.QuanHuyen.TenQuanHuyen">@Model.LoaiNhaDat.TenLoaiNhaDat @Model.QuanHuyen.TenQuanHuyen</a><span>/</span><a href="@Url.Action("TimKiemBaiDang","Home",new {IDTinhThanhPho= Model.QuanHuyen.IDTinhThanhPho })" title="@Model.QuanHuyen.TinhThanhPho.TenTinhThanhPho">@Model.QuanHuyen.TinhThanhPho.TenTinhThanhPho</a>
+            </div>
+            <div class="description" id="product-detail-web" uid="626998">
+                <h1 class="tile-product"> @Model.TenBatDongSan</h1>
+                <div class="short-detail">
+                    @Model.DiaChi
+                </div>
+                <div class="divide">&nbsp;</div>
+                <div class="short-detail-wrap">
+                    <ul class="short-detail-2 clearfix pad-16">
+                        <li><span class="sp1">Mức giá:</span><span class="sp2">@Model.Gia @Model.DonVi.TenDonVi</span></li>
+                        <li><span class="sp1">Diện tích:</span><span class="sp2">@Model.DienTich m&#xB2;</span></li>
+                    </ul>
+                </div>
+
+                <div class="divide">&nbsp;</div>
+                <div class="detail-product">
+                    <div class="detail-1 pad-bot-16">
+                        <span class="title-detail">Thông tin mô tả</span>
+                        <div class="des-product">
+                            <div style="white-space: pre-line">
+                                @Model.Mota.Replace("<br />", Environment.NewLine)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-2 pad-16">
+                        <span class="title-detail">Đặc điểm bất động sản</span>
+                        <div class="box-round-grey3">
+                            <div class="row-1"><span class="r1">Loại tin đăng:</span><span class="r2">@Model.LoaiBaiDang.TenLoaiBaiDang, @Model.LoaiNhaDat.TenLoaiNhaDat</span></div>
+                            <div class="row-1"><span class="r1">Địa chỉ:</span><span class="r2">@Model.DiaChi</span></div>
+                            @if (Model.SoPhongNgu != null)
+                            {
+                                <div class="row-1"><span class="r1">Số phòng ngủ:</span><span class="r2">@Model.SoPhongNgu Phòng</span></div>
+                            }
+                            @if (Model.SoTang != null)
+                            {
+                                <div class="row-1"><span class="r1">Số tầng:</span><span class="r2">@Model.SoTang</span></div>
+                            }
+                            @if (Model.SoToilet != null)
+                            {
+                                <div class="row-1"><span class="r1">Số Toilet:</span><span class="r2">@Model.SoToilet</span></div>
+                            }
+                            @if (Model.NoiThat != null)
+                            {
+                                <div class="row-1"><span class="r1">Nội thất:</span><span class="r2">@Model.NoiThat</span></div>
+                            }
+                            @if (Model.MatTien != null)
+                            {
+                                <div class="row-1"><span class="r1">Mặt tiền:</span><span class="r2">@Model.MatTien</span></div>
+                            }
+                            @if (Model.HuongNha != null)
+                            {
+                                <div class="row-1"><span class="r1">Hướng nhà:</span><span class="r2">@Model.HuongNha</span></div>
+                            }
+                        </div>
+                    </div>
+                    @if (Model.IDDuAn != 1)
+                    {
+                        <div class="detail-2 pad-16">
+                            <span class="title-detail">Thông tin dự án</span>
+                            <div class="box-round-grey3">
+                                <div class="row-1">
+                                    <span class="r1">Tên dự án:</span><span class="r2">
+                                        @Model.DuAn.TenDuAn<span class="dot">·</span>
+                                        <a href="@Url.Action("Detail_duan","Home",new {id=Model.IDDuAn })" target="_blank" class="link">Xem dự án</a>
+                                    </span>
+                                </div>
+                                <div class="row-1"><span class="r1">Loại dự án:</span><span class="r2">@Model.DuAn.LoaiDuAn.TenLoaiDuAn</span></div>
+                                @if (Model.DuAn.TongDienTich != null)
+                                {
+                                    <div class="row-1"><span class="r1">Tổng diện tích:</span><span class="r2">@Model.DuAn.TongDienTich m²</span></div>
+                                }
+                                @if (Model.DuAn.QuyMoDuAn != null)
+                                {
+                                    <div class="row-1"><span class="r1">Quy mô dự án:</span><span class="r2">@Model.DuAn.QuyMoDuAn</span></div>
+                                }
+                            </div>
+                        </div>
+                    }
+
+
+
+                    <!--end product seo tag-->
+                    <div class="divide">&nbsp;</div>
+                    <div class="product-config pad-16">
+                        <ul class="short-detail-2 list2 clearfix">
+                            <li><span class="sp1">Ngày đăng:</span><span class="sp3">@Model.NgayDang.ToString(string.Format("dd/MM/yyyy"))</span></li>
+                            <li><span class="sp1">Mã tin:</span><span class="sp3">@Model.ID</span></li>
+                        </ul>
+                        <hr />
+
+
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" value="5" id="vipOrder">
+        </section>
+    </div>
+    <div class="main-right">
+        <div class="box-contact">
+            <div class="user">
+
+                <div class="name" title="@ViewBag.nhanviensale.Sale.TenSales">
+                    @ViewBag.nhanviensale.Sale.TenSales
+                </div>
+                <div class="phone text-center"><span class="phoneEvent" raw="0989848332" moblie="0989848332">@ViewBag.nhanviensale.Sale.SoDienThoai</span></div>
+                <div class="phone text-center"><span class="phoneEvent" raw="0989848332" moblie="0989848332">@ViewBag.nhanviensale.Sale.Email</span></div>
+                @*<div class="mail btn-border-grey text-center">
+                    <a id="email" href="mailto:thanh.sunisland@gmail.com?subject=Kha&#x301;ch ha&#x300;ng Batdongsan.com quan t&#xE2;m t&#x1A1;&#x301;i tin &#x111;&#x103;ng&amp;body=T&#xF4;i co&#x301; quan t&#xE2;m t&#x1A1;&#x301;i tin &#x111;&#x103;ng na&#x300;y https://batdongsan.com.vn/cho-thue-can-ho-chung-cu-duong-nguyen-tuan-phuong-nhan-chinh-prj-legend-tower-109-nguyen-tuan/cho-chcc-the-2-ngu-du-do-dep-gia-re-nhat-thi-truong-vao-ngay-lh-0989-848-332-pr19520078" data-email="thanh.sunisland@gmail.com" class="email-copy">Gửi email</a>
+                </div>*@
+            </div>
+        </div>
+    </div>    
+</div>
+
+
+<script>
+    $(function () {
+        $('img[data-src-error]').error(function () {
+            var o = $(this);
+            var errorSrc = o.attr('data-src-error');
+
+            if (o.attr('src') != errorSrc) {
+                o.attr('src', errorSrc);
+            }
+        });
+    });
+</script>

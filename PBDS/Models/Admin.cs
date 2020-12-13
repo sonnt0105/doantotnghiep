@@ -14,8 +14,8 @@ namespace PBDS.Models
     
     public partial class Admin
     {
-        public int idtaikhoan { get; set; }
-        public string tentaikhoan { get; set; }
-        public string matkhau { get; set; }
+        public int ID { get; set; }
+        public string TenTaiKhoan { get; set; }
+        public string MatKhau { get; set; }
     }
 }

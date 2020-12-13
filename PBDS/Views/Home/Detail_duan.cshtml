@@ -1,0 +1,159 @@
+﻿@model PBDS.Models.DuAn
+
+@{
+    ViewBag.Title = "Chi tiết dự án";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://staticfile.batdongsan.com.vn/css/filestatic.ver202010290636.msvbds.FrontEnd.min.css" />
+
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<script language="javascript" type="text/javascript">
+    function GetQuanHuyen(_IDTinhThanhPho) {
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#ddlquanhuyen").html(procemessage).show();
+        var url = "/Home/GetQuanHuyenByIDTinhThanhPho/";
+
+        $.ajax({
+            url: url,
+            data: { IDTinhThanhPho: _IDTinhThanhPho },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>Tất cả quận huyện</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#ddlquanhuyen").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+    }
+</script>
+
+<div class="site-center">
+    <link rel="stylesheet" href="https://staticfile.batdongsan.com.vn/css/project.css" />
+    <link rel="stylesheet" href="https://staticfile.batdongsan.com.vn/css/Mapv1.css" />
+    <link rel="stylesheet" href="https://staticfile.batdongsan.com.vn/css/Project/ProjectDetail.css" />
+    <link rel="stylesheet" href="https://staticfile.batdongsan.com.vn/css/Project/nouislider.min.css" />
+    <link rel="stylesheet" href="https://staticfile.batdongsan.com.vn/css/Project/nouislider.tooltips.css" />
+    <link rel="stylesheet" type="text/css" href="https://staticfile.batdongsan.com.vn/js/lightGallery1.2.21/css/projectLightGallery.min.css" media="all">
+    <div class="clear"></div>
+
+    <div class="" style="width:1000px">
+        @using (Html.BeginForm("TimKiemDuAn", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="prj-top-search">
+                    <div class="col1">
+                        <div>Tìm kiếm dự án</div>
+                    </div>
+                    <div class="col2">
+                        <div style="position: relative;">
+                            <input type="text" id="txtAutoComplete" class="suggest" placeholder="Nhập từ khóa tìm kiếm" value="" name="">
+                        </div>
+                        <input type="hidden" name="hddProjectId" id="hddProjectId" />
+                        <div id="searchcontrol" style="display: block;">
+                            <div id="divCategory" class="comboboxs advance-select-box mr10" style="">  
+                                <input data-val="true" data-val-required="The CateId field is required." id="hdCateId" name="CateId" type="hidden" value="351" />
+                                @Html.DropDownList("IDLoaiDuAn", new SelectList(ViewBag.listloaiduan, "ID", "TenLoaiDuAn"), htmlAttributes: new { @class = "form-control" })
+                            </div>
+
+                            <div id="divCity" class="comboboxs advance-select-box mr10" style="">
+                                @Html.DropDownList("IDTinhThanhPho", new SelectList(ViewBag.listtinhthanh, "ID", "TenTinhThanhPho"), htmlAttributes: new { @class = "form-control", @onchange = "javascript:GetQuanHuyen(this.value);" })
+                            </div>
+
+                            <div id="divDistric" class="comboboxs advance-select-box mr10" style="">
+                                @Html.DropDownList("IDQuanHuyen", new SelectList(ViewBag.listquanhuyen, "ID", "TenQuanHuyen"), htmlAttributes: new { @class = "form-control", id = "ddlquanhuyen", name = "ddlquanhuyen" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col3">
+                        <input type="submit" value="Tìm kiếm" class="search" id="btnSearch">
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            }
+
+
+        <div style="clear: both; margin-bottom: 10px;"></div>
+        <div class="prj-detail">
+            <h1>
+                @Model.TenDuAn
+            </h1>
+            <div class="prj-content">
+                <div class="tab_content">
+                    <div class="prj-tongquan">
+                        <div class="prj-left">
+                            <div id="imgslide" style="width: 640px;">
+                                <div class="slideitem" rel="1">
+                                    <div>
+                                        <img src="/@Model.Urlimage">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="prj-right">
+                            <h2 class="prj-title-group normal">Thông tin chung</h2>
+                            <div class="prj-i">
+                                <div class="fl">Tên dự án</div>
+                                <div class="fr">
+                                    @Model.TenDuAn
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="prj-i">
+                                <div class="fl">Địa chỉ</div>
+                                <div class="fr">@Model.PhuongXa.TenPhuongXa @Model.QuanHuyen.TenQuanHuyen, @Model.QuanHuyen.TinhThanhPho.TenTinhThanhPho</div>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="prj-i">
+                                <div class="fl">Đơn vị phân phối</div>
+                                <div class="fr">@Model.DonViPhanPhoi</div>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="prj-i">
+                                <div class="fl">Tổng diện tích</div>
+                                <div class="fr">@Model.TongDienTich m²</div>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="prj-i">
+                                <div class="fl">Loại hình phát triển</div>
+                                <div class="fr">@Model.LoaiDuAn.TenLoaiDuAn</div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                        <div class="clear">&nbsp;</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+        <div class="project-body-left">
+            <h2 class="prj-title-group normal">Giới thiệu dự án</h2>
+            <div class="prj-noidung a1">
+                <h2><strong>Thông tin tổng quan dự án @Model.TenDuAn</strong></h2>
+                <div style="white-space: pre-line">                    
+                    @Model.MoTa.Replace("<br />", Environment.NewLine)
+                </div>               
+            </div>
+            <h2 class="prj-title-group normal">Tin rao thuộc dự án</h2>
+            <div class="prjdetail-prd">
+                <ul>
+                    @foreach (var item in ViewBag.tinraothuocduan)
+                    {
+                        <li>
+                            <h3 class="inormal">
+                                <span>Tin rao </span>
+                                <a href="@Url.Action("TimKiemBaiDang","Home",new {IDDuAn= Model.ID })">@item.LoaiBaiDang.TenLoaiBaiDang @item.TenLoaiNhaDat tại <strong>@Model.TenDuAn</strong></a>
+                            </h3>
+                        </li>
+                    }
+                    
+                </ul>
+            </div>
+        </div>        
+        <div style="clear: both"></div>             
+    </div>
+</div>

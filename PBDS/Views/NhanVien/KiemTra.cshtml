@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewBag.Title = "KiemTra";
+    ViewBag.tennhanvien = ViewBag.tennhanvien;
+    Layout = "~/Views/Shared/LayoutNhanVien.cshtml";
+}
+
+
+<h2 style="text-align:center">Bài Kiểm tra Đợt @ViewBag.dotkiemtra</h2>
+
+<div class="quiz-main" data-quiztype="Graded" data-duration="0">
+
+    @foreach (var cauhoi in ViewBag.listcauhoi)
+    {
+        <ul class="list-quiz ">
+            <li data-sectionid="78626" class="quiz-section">
+                <div class="quiz-section-title"> Câu @cauhoi.ID (5 Điểm): @cauhoi.NoiDung </div>
+                <div class="quiz-section-content">
+                    <div class="item item-question item-choices">
+                        <ul class=""style="list-style:none">
+                            @foreach (var traloi in ViewBag.listtraloi)
+                            {
+                                if (traloi.IDCauHoi == cauhoi.ID)
+                                {
+                                    <li class="" for="">
+                                        <label class="overlabel">
+                                            <input type="radio" class="" value="@traloi.DungSai" onclick="checknumofradio(); checkketqua();" name="@cauhoi.ID" />
+                                            <span class="">
+                                                <span class="answer-desc">@traloi.DapAn </span>
+                                            </span>
+                                        </label>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    }
+    @using (Html.BeginForm("ChamDiem", "NhanVien", FormMethod.Post))
+    {
+        <div class="quiz-check">
+            <input id="diem" name="diem" type="hidden" value="0" />
+            <input class="btn btn-info check-quiz " type="submit"  id="buttonsubmit" value="Nộp Bài"  onclick="return confirm('Chọn Ok để hoàn tất kiểm tra')" /><span id="nhacnho" style="color:red">Bạn cần đánh đủ số câu trước khi nộp bài</span>
+        </div>
+    }        
+</div>
+
+<script>
+    if ($('input:radio:checked').length != 20) {
+        document.getElementById("buttonsubmit").disabled = true;
+    }
+    function checknumofradio() {
+        if ($('input:radio:checked').length != 20) {
+            document.getElementById("buttonsubmit").disabled = true;
+        }
+        else {
+            document.getElementById("buttonsubmit").disabled = false;
+            document.getElementById("nhacnho").style.display = "none";
+        }
+    }
+
+    function checkketqua() {        
+        var diem = 0;
+        for (var i = 1; i <= 20; i++) {
+            var radios = document.getElementsByName(i);
+            for (var j = 0, length = radios.length; j < length; j++) {
+                if (radios[j].checked && radios[j].value == 1) {
+                    diem++;               
+                }
+            }
+        }
+        document.getElementById("diem").value = diem;        
+    }
+
+</script>
+
+@section scripts
+{}

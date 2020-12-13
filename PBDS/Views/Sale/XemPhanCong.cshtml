@@ -1,0 +1,128 @@
+﻿@model PBDS.Models.PhanCong
+
+<style>
+    .button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 16px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+    }
+
+    .buttonagree {
+        background-color: white;
+        color: black;
+        border: 2px solid #4CAF50;
+    }
+
+        .buttonagree:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+    .buttoncancel {
+        background-color: white;
+        color: black;
+        border: 2px solid #f44336;
+    }
+
+        .buttoncancel:hover {
+            background-color: #f44336;
+            color: white;
+        }
+
+    .center {
+        display: flex;
+        justify-content: center;
+    }
+
+    .close {
+        font-size: 35px;
+        margin: 5px 10px;
+    }
+</style>
+
+<div>
+    <div class="modal-header">
+        <h4>@Model.BatDongSan.TenBatDongSan</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    </div>  
+    <hr />
+
+    <img src="~/@ViewBag.batdongsan.Urlimage" alt="Không có hình ảnh" width="300" height="180" />
+
+    <p><b>@Html.DisplayName("Tên bất động sản")</b> : @ViewBag.batdongsan.TenBatDongSan</p>
+
+    <p><b>@Html.DisplayName("Tên loại bài đăng")</b> : @ViewBag.batdongsan.LoaiBaiDang.TenLoaiBaiDang</p>
+
+    <p><b>@Html.DisplayName("Tên dự án")</b> : @ViewBag.batdongsan.DuAn.TenDuAn</p>
+
+    <p><b>@Html.DisplayName("Tên loại nhà đất")</b> : @ViewBag.batdongsan.LoaiNhaDat.TenLoaiNhaDat</p>
+
+    <p><b>@Html.DisplayName("Giá")</b> : @ViewBag.batdongsan.Gia @ViewBag.batdongsan.DonVi.TenDonVi </p>
+
+    <p><b>@Html.DisplayName("Diện tích")</b> : @ViewBag.batdongsan.DienTich m<sup>2</sup></p>
+
+    <p><b>Địa chỉ</b> : @ViewBag.batdongsan.DiaChi</p>
+
+    <div style="white-space: pre-line">
+        <p><b>@Html.DisplayName("Mô tả")</b> : @ViewBag.batdongsan.Mota.Replace("<br />", Environment.NewLine))</p>
+    </div>
+
+    @if (ViewBag.batdongsan.SoPhongNgu != null)
+    {
+        <p><b>@Html.DisplayName("Số phòng ngủ")</b> : @ViewBag.batdongsan.SoPhongNgu Phòng</p>
+    }
+    @if (ViewBag.batdongsan.SoTang != null)
+    {
+        <p><b>@Html.DisplayName("Số tầng")</b> : @ViewBag.batdongsan.SoTang</p>
+    }
+    @if (ViewBag.batdongsan.SoToilet != null)
+    {
+        <p><b>@Html.DisplayName("Số toilet")</b> : @ViewBag.batdongsan.SoToilet</p>
+    }
+    @if (ViewBag.batdongsan.NoiThat != null)
+    {
+        <p><b>@Html.DisplayName("Nội thất")</b> : @ViewBag.batdongsan.NoiThat</p>
+    }
+    @if (ViewBag.batdongsan.MatTien != null)
+    {
+        <p><b>@Html.DisplayName("Mặt tiền")</b> : @ViewBag.batdongsan.MatTien</p>
+    }
+    @if (ViewBag.batdongsan.HuongNha != null)
+    {
+        <p><b>@Html.DisplayName("Hướng nhà")</b> : @ViewBag.batdongsan.HuongNha</p>
+    }
+
+    <p><b>@Html.DisplayName("Ngày Đăng")</b> : @ViewBag.batdongsan.NgayDang.ToString(string.Format("dd/MM/yyyy"))</p>
+    @if (ViewBag.batdongsan.TenLienHe != null)
+    {
+        <p><b>@Html.DisplayName("Tên liên hệ")</b> : @ViewBag.batdongsan.TenLienHe</p>
+    }
+    @if (ViewBag.batdongsan.DiaChiLienHe != null)
+    {
+        <p><b>@Html.DisplayName("Địa chỉ liên hệ")</b> : @ViewBag.batdongsan.DiaChiLienHe</p>
+    }
+
+    <p><b>@Html.DisplayName("Số điện thoại liên hệ")</b> : @ViewBag.batdongsan.SoDienThoaiLienHe</p>
+
+    @if (ViewBag.batdongsan.EmailLienHe != null)
+    {
+        <p><b>@Html.DisplayName("Email liên hệ")</b> : @ViewBag.batdongsan.EmailLienHe</p>
+    }
+
+    <p><b>@Html.DisplayName("Tên sale")</b> : @Model.Sale.TenSales</p>
+
+    <p><b>@Html.DisplayName("Phần trăn hoa hồng")</b> : @Model.PhanTramHoaHong %</p>
+
+</div>
+
+<div class="center">
+    <button type="button" class="button buttonagree" data-dismiss="modal">OK</button>
+</div>
