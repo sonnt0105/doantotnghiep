@@ -13,22 +13,88 @@
     }
 </style>
 
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<script language="javascript" type="text/javascript">
+    function GetQuanHuyen(_IDTinhThanhPho) {
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#ddlquanhuyen").html(procemessage).show();
+        var url = "/Home/GetQuanHuyenByIDTinhThanhPho/";
+
+        $.ajax({
+            url: url,
+            data: { IDTinhThanhPho: _IDTinhThanhPho },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>Tất cả quận huyện</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#ddlquanhuyen").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+    }
+</script>
+
 <h2>Danh sách dự án</h2>
 
-@(Html.Kendo().Grid<PBDS.Models.EDuAn>(Model)
-                                            .Name("grid")
-                                            .Columns(columns =>
-                                            {
-                                                columns.Bound(p => p.TenDuAn).Title("Tên dự án");
-                                                columns.Bound(p => p.DiaChi).Width(400).Title("Địa chỉ");                                                
-                                                columns.Bound(p => p.TenLoaiDuAn).Width(150).Title("Loại dự án");                                                
-                                                columns.Bound(p => p.ID).Template(cp => "<a href=\"javascript: void(0); \" class=\"xem btn btn-info\" data-id=" + cp.ID + ">XEM</a>").Width(150).Title("");
-                                            })
+@using (Html.BeginForm("DSDuAn", "NhanVien", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="row" style="padding:15px">
+        <div>
+            <div>
+                <div>Nhập tìm kiếm</div>
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="Tìm kiếm tên dự án" value="" name="searchstring" style="height:38px" size="28" />
+            </div>
+        </div>        
+        <div>
+            <div>
+                <div>Loại dự án</div>
+            </div>
+            <div class="form-group">
+                @Html.DropDownList("IDLoaiDuAn", new SelectList(ViewBag.listloaiduan, "ID", "TenLoaiDuAn"),"Tất cả loại dự án", new { @class = "form-control"})
+            </div>
+        </div>        
+        <div class="select-control city-control">
+            <div class="select-control-label">
+                <div class="">Tỉnh Thành</div>
+            </div>
+            <div class="form-group">
+                @Html.DropDownList("IDTinhThanhPho", new SelectList(ViewBag.listtinhthanh, "ID", "TenTinhThanhPho"), new { @class = "form-control", @onchange = "javascript:GetQuanHuyen(this.value); javascript:GetDuAn(this.value);" })
+            </div>
+        </div>
 
-                                            .Pageable()
-                                            .Sortable()
-                                            .Scrollable()
-                                            .HtmlAttributes(new { style = "height:550px;" })
+        <div class="select-control city-control" aria-label="Bạn hãy chọn tỉnh thành trước" data-microtip-position="top" role="tooltip">
+            <div class="select-control-label">
+                <div class="">Quận Huyện</div>
+            </div>
+            <div class="form-group">
+                @Html.DropDownList("IDQuanHuyen", new SelectList(ViewBag.listquanhuyen, "ID", "TenQuanHuyen"), new { @class = "form-control", @onchange = "javascript:GetDuAn(this.value);", id = "ddlquanhuyen", name = "ddlquanhuyen" })
+            </div>
+        </div>
+        <input type="submit" id="btnSearch" class="btn btn-info" style="font-size:17px ;margin:15px 30px 10px 10px;padding:15px 40px 15px 40px ;color:white;" value="Tìm kiếm" />
+    </div>
+}
+
+@(Html.Kendo().Grid<PBDS.Models.EDuAn>(Model)
+                                .Name("grid")
+                                .Columns(columns =>
+                                {
+                                    columns.Bound(p => p.TenDuAn).Title("Tên dự án");
+                                    columns.Bound(p => p.DiaChi).Width(400).Title("Địa chỉ");
+                                    columns.Bound(p => p.TenLoaiDuAn).Width(150).Title("Loại dự án");
+                                    columns.Bound(p => p.ID).Template(cp => "<a href=\"javascript: void(0); \" class=\"xem btn btn-info\" data-id=" + cp.ID + ">XEM</a>").Width(150).Title("");
+                                })
+
+                                .Pageable()
+                                .Sortable()
+                                .Scrollable()
+                                .HtmlAttributes(new { style = "height:550px;" })
 )
 
 <div id='myModal' class='modal'>

@@ -157,16 +157,39 @@
                     int position;
                     int pageCurrent = ViewBag.pageCurrent;
                     var duansearch = ViewBag.duansearch;
-                    float numSize = ViewBag.numSize;
+                    int numSize = ViewBag.numSize;
+                    int showMax = 10;
+                    int startPage;
+                    int endPage;
+                    if (numSize <= showMax)
+                    {
+                        startPage = 1;
+                        endPage = numSize;
+                    }
+                    else if (pageCurrent + 9 > numSize)
+                    {
+                        startPage = numSize - 9;
+                        endPage = numSize;
+                    }
+                    else
+                    {
+                        startPage = pageCurrent;
+                        endPage = pageCurrent + showMax - 1;
+                    }
                     if (pageCurrent > 1)
                     {
                         <li class="page-item">
                             <a class="page-link" href="@Url.Action("TimKiemDuAn", "Home", new { duansearch.searchstring, duansearch.IDLoaiDuAn,
                                                       duansearch.IDTinhThanhPho, duansearch.IDQuanHuyen,
-                                                      page = pageCurrent-1 })" tabindex="-1"><<</a>
+                                                      page = 1 })" tabindex="-1"><<</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("TimKiemDuAn", "Home", new { duansearch.searchstring, duansearch.IDLoaiDuAn,
+                                                      duansearch.IDTinhThanhPho, duansearch.IDQuanHuyen,
+                                                      page = pageCurrent-1 })" tabindex="-1"><</a>
                         </li>
                     }
-                    for (position = 1; position <= numSize; position++)
+                    for (position = startPage; position <= endPage && position <= numSize; position++)
                     {
                         if (position == pageCurrent)
                         {
@@ -192,7 +215,12 @@
                         <li class="page-item">
                             <a class="page-link" href="@Url.Action("TimKiemDuAn", "Home", new {duansearch.searchstring, duansearch.IDLoaiDuAn,
                                                                                 duansearch.IDTinhThanhPho, duansearch.IDQuanHuyen,
-                                                                                page = pageCurrent+1 })" tabindex="-1">>></a>
+                                                                                page = pageCurrent+1 })" tabindex="-1">></a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("TimKiemDuAn", "Home", new {duansearch.searchstring, duansearch.IDLoaiDuAn,
+                                                                                duansearch.IDTinhThanhPho, duansearch.IDQuanHuyen,
+                                                                                page = numSize })" tabindex="-1">>></a>
                         </li>
                     }
                 }

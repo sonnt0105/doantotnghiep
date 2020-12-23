@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -27,6 +28,11 @@ namespace PBDS.Models
         public Nullable<int> IDDuAn { get; set; }
         public string TenDuAn { get; set; }
         public string searchstring { get; set; }
+        public DateTime NgayDang { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime NgayCapNhatTu { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime NgayCapNhatDen { get; set; }
 
         public virtual DuAn DuAn { get; set; }
         public virtual LoaiBaiDang LoaiBaiDang { get; set; }

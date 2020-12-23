@@ -33,109 +33,7 @@ namespace PBDS.Controllers
                 return RedirectToAction("../Home/Login");
             }
         }
-        public ActionResult Danhsach_DuyetBaiDang(EBatDongSansearch batdongsansearch)
-        {
-            var model = from o in new DB_BatDongSan().BatDongSans.Where(x => x.TrangThai == 1)
-                        select new EBatDongSan
-                        {
-                            ID = o.ID,
-                            TenBatDongSan = o.TenBatDongSan,
-                            TenQuanHuyen = o.QuanHuyen.TenQuanHuyen,                            
-                            Gia_DonVi = o.Gia + " " + o.DonVi.TenDonVi,
-                            DiaChi = o.DiaChi,
-                            TenLoaiBaiDang = o.LoaiBaiDang.TenLoaiBaiDang,
-                            TenLoaiNhaDat = o.LoaiNhaDat.TenLoaiNhaDat,
-                            DienTich = o.DienTich,
-                            IDLoaiBaiDang = o.IDLoaiBaiDang,
-                            Mota = o.Mota,
-                            Urlimage = o.Urlimage,
-                            TrangThai = o.TrangThai,
-                            NgayCapNhat = o.NgayCapNhat,
-                            NgayDang = o.NgayDang,
-                            
-                        };
-            if (Session["admin"] != null)
-            {
-                return View(model);
-            }
-            else
-            {
-                return RedirectToAction("../Home/Login");
-            }
 
-        }
-
-        // Get Duyệt bài đăng Popup
-        public ActionResult Duyet_partial(int? ID)
-        {
-            var batdongsan = db.BatDongSans.Where(m => m.ID == ID).FirstOrDefault();
-            if (batdongsan == null)
-            {
-                return HttpNotFound();
-            }            
-            if (Session["admin"] != null)
-            {
-                return PartialView("Duyet_partial", batdongsan);
-            }
-            else
-            {
-                return RedirectToAction("../Home/Login");
-            }
-        }        
-
-        // Hàm Post khi click button duyệt
-        [HttpPost]
-        public ActionResult Duyet(BatDongSan bds)
-        {
-            var batdongsan = db.BatDongSans.Where(s => s.ID == bds.ID).FirstOrDefault();
-            if (batdongsan == null)
-            {
-                return HttpNotFound();
-            }
-            batdongsan.TrangThai = 2;
-            db.Entry(batdongsan).State = EntityState.Modified;
-            db.SaveChanges();            
-            return Redirect("Danhsach_DuyetBaiDang");
-        }
-        [HttpPost]
-        public ActionResult LoaiBo(BatDongSan bds)
-        {
-            var batdongsan = db.BatDongSans.Where(s => s.ID == bds.ID).FirstOrDefault();
-            if (batdongsan == null)
-            {
-                return HttpNotFound();
-            }
-            db.Entry(batdongsan).State = EntityState.Deleted;
-            db.SaveChanges();
-            return Redirect("Danhsach_DuyetBaiDang");
-        }
-
-        public ActionResult TinhLuong()
-        {
-            var model = from o in new DB_BatDongSan().PhanCongs.Where(x=>x.BatDongSan.TrangThai == 4)
-                        select new EPhanCongSales
-                        {
-                            ID = o.ID,
-                            IDBatDongSan = o.IDBatDongSan,
-                            TenBatDongSan = o.BatDongSan.TenBatDongSan,
-                            IDSales = o.IDSales,
-                            TenSale = o.Sale.TenSales,
-                            PhanTramHoaHong_string = o.PhanTramHoaHong*100+" %",
-                            NgayTao = o.NgayTao,                                                       
-                            GiaBatDongSan = o.BatDongSan.Gia+" "+o.BatDongSan.DonVi.TenDonVi,
-                            HoaHong = (double)o.BatDongSan.Gia*o.PhanTramHoaHong+" "+o.BatDongSan.DonVi.TenDonVi,
-                            
-                        };
-            if (Session["admin"] != null)
-            {
-                return View(model);
-            }
-            else
-            {
-                return RedirectToAction("../Home/Login");
-            }
-        }      
-        
         public ActionResult DSNhanVien()
         {
             var model = from o in new DB_BatDongSan().NhanViens.Where(x=>x.TrangThai == 1)
@@ -340,7 +238,7 @@ namespace PBDS.Controllers
                 var fileExt = System.IO.Path.GetExtension(file.FileName).Substring(1);
                 if (!supportedTypes.Contains(fileExt))
                 {
-                    ViewBag.ErrorMessage = "File không hợp lệ - chỉ được chọn file EXCEL";
+                    ViewBag.ErrorMessage = "File khong hợp lệ - chỉ được chọn file EXCEL";
                     return View();
                 }
                 if ((file != null) &&  !string.IsNullOrEmpty(file.FileName))   
@@ -487,7 +385,7 @@ namespace PBDS.Controllers
             return bangdiem;
         }
 
-        public ActionResult ExportToExcel()
+        public ActionResult ExportToExcel_bangdiem()
         {
             var gv = new GridView();
             gv.DataSource = this.GetBangdiem();
@@ -505,5 +403,6 @@ namespace PBDS.Controllers
             Response.End();
             return View("Index");
         }
+          
     }  
 }
