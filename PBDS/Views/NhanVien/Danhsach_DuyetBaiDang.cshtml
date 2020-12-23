@@ -1,0 +1,212 @@
+﻿@model IEnumerable<PBDS.Models.EBatDongSan>
+
+@{
+    ViewBag.Title = "Duyet bài";
+    ViewBag.tennhanvien = ViewBag.tennhanvien;
+    Layout = "~/Views/Shared/LayoutNhanVien.cshtml";
+}
+
+<style>
+    #grid .k-grid-content {
+        min-height: 440px;
+        max-height: 440px;
+    }
+</style>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<script language="javascript" type="text/javascript">
+    function GetLoaiNhaDat(_IDLoaiBaiDang) {
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#ddlloainhadat").html(procemessage).show();
+        var url = "/Home/GetLoaiNhaDatByIDLoaiBaiDang/";
+
+        $.ajax({
+            url: url,
+            data: { IDLoaiBaiDang: _IDLoaiBaiDang },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>Tất cả loại nhà đất</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#ddlloainhadat").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+    }
+</script>
+<script language="javascript" type="text/javascript">
+    function GetQuanHuyen(_IDTinhThanhPho) {
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#ddlquanhuyen").html(procemessage).show();
+        var url = "/Home/GetQuanHuyenByIDTinhThanhPho/";
+
+        $.ajax({
+            url: url,
+            data: { IDTinhThanhPho: _IDTinhThanhPho },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>Tất cả quận huyện</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#ddlquanhuyen").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+    }
+</script>
+
+<h4>Duyệt bài đăng</h4>
+
+
+
+@using (Html.BeginForm("Danhsach_DuyetBaiDang", "NhanVien", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="row" style="padding:15px">
+        <div>
+            <div>
+                <div>Nhập tìm kiếm</div>
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="Tìm kiếm tên bất động sản" value="" name="searchstring" style="height:38px" size="30" />
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div>
+                <div class="">Mức giá</div>
+            </div>
+            <div>
+                <input name="GiaTu" placeholder="Từ...Triệu" size="13" style="padding:5px 0px; width:115px" maxlength="6" numbersonly="true" decimal="true" type="number" />
+                <input name="GiaDen" placeholder="Đến...Triệu" size="13" style="padding:5px 0px; width:115px" maxlength="6" numbersonly="true" decimal="true" type="number" />
+            </div>
+        </div>
+        <div>
+            <div>
+                <div>Loại bài đăng</div>
+            </div>
+            <div class="form-group">
+                @Html.DropDownList("IDLoaiBaiDang", new SelectList(ViewBag.loaibaidang, "ID", "TenLoaiBaiDang"), new { @class = "form-control", @onchange = "javascript:GetLoaiNhaDat(this.value)" })
+            </div>
+        </div>
+        <div>
+            <div>
+                <div>Loại nhà đất</div>
+            </div>
+            <div class="form-group">
+                @Html.DropDownList("IDLoaiNhaDat", new SelectList(ViewBag.listloainhadat, "ID", "TenLoaiNhaDat"), "Tất cả loại nhà đất", new { @class = "form-control", id = "ddlloainhadat", name = "ddlloainhadat" })
+            </div>
+        </div>
+        <div class="select-control city-control">
+            <div class="select-control-label">
+                <div class="">Tỉnh Thành</div>
+            </div>
+            <div class="form-group">
+                @Html.DropDownList("IDTinhThanhPho", new SelectList(ViewBag.listtinhthanh, "ID", "TenTinhThanhPho"), new { @class = "form-control", @onchange = "javascript:GetQuanHuyen(this.value); javascript:GetDuAn(this.value);" })
+            </div>
+        </div>
+
+        <div class="select-control city-control" aria-label="Bạn hãy chọn tỉnh thành trước" data-microtip-position="top" role="tooltip">
+            <div class="select-control-label">
+                <div class="">Quận Huyện</div>
+            </div>
+            <div class="form-group">
+                @Html.DropDownList("IDQuanHuyen", new SelectList(ViewBag.listquanhuyen, "ID", "TenQuanHuyen"), new { @class = "form-control", @onchange = "javascript:GetDuAn(this.value);", id = "ddlquanhuyen", name = "ddlquanhuyen" })
+            </div>
+        </div>
+        <input type="submit" id="btnSearch" class="btn btn-info" style="font-size:17px ;margin:15px 30px 10px 300px;padding:15px 40px 15px 40px ;color:white;" value="Tìm kiếm" />
+    </div>
+
+}
+
+@(Html.Kendo().Grid<PBDS.Models.EBatDongSan>(Model)
+                                    .Name("grid")
+                                    .Columns(columns =>
+                                    {
+                                        columns.Bound(p => p.TenBatDongSan).Title("Tên bất động sản").Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
+                                        columns.Bound(p => p.Gia_DonVi).Width(120).Title("Giá").Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
+                                        columns.Bound(p => p.DiaChi).Width(270).Title("Địa chỉ").Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
+                                        columns.Bound(p => p.TenLoaiBaiDang).Width(120).Title("Loại").Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
+                                        columns.Bound(p => p.TenLoaiNhaDat).Width(120).Title("Loại nhà đất").Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
+                                        columns.Bound(p => p.ID).Template(cp => "<a href=\"javascript: void(0); \" class=\"xem btn btn-info\" data-id=" + cp.ID + ">DUYỆT</a>").Width(150).Title("");
+                                    })
+                                    .Pageable()
+                                    .Sortable()
+                                    .Scrollable()
+                                    .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
+                                    .HtmlAttributes(new { style = "height:550px;" })
+                                    .DataSource(dataSource => dataSource
+                                    .Ajax()
+                                    .PageSize(20)
+                                    .ServerOperation(true)
+                                    .Read(read => read.Action("Filter_Row_Orders_Read", "Grid"))
+                                    )
+)
+<!-- gọi Duyet_partial View-->
+<div id='myModal' class='modal'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+<!-- JS của Kendo Grid-->
+<script type="text/javascript">
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            alert(message);
+        }
+    }
+</script>
+<!-- JS của Duyet_partial View-->
+@section scripts
+{
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <script>
+        var URLXem = '/NhanVien/Duyet_partial';
+        $(function () {
+            $(".xem").click(function () {
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: URLXem,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "Id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        $('#myModalContent').html(data);
+                        $('#myModal').modal(options);
+                        $('#myModal').modal('show');
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+            $("#closbtn").click(function () {
+                $('#myModal').modal('hide');
+            });
+        });
+    </script>
+}
+

@@ -32,11 +32,11 @@ namespace PBDS.Controllers
             
             var batdongsan1 = db.BatDongSans.Where(x=>x.TrangThai == 3).ToList().Take(8);
             ViewBag.batdongsan2 = db.BatDongSans.Where(x => x.TrangThai == 3).ToList().Skip(8).Take(8);
-            ViewBag.tdtphcm = db.BatDongSans.Where(x => x.QuanHuyen.TinhThanhPho.ID == 140).Where(x => x.TrangThai == 3).Where(x=>x.IDLoaiBaiDang == 1).Count();
-            ViewBag.tdtphanoi = db.BatDongSans.Where(x => x.QuanHuyen.TinhThanhPho.ID == 1).Where(x => x.TrangThai == 3).Where(x => x.IDLoaiBaiDang == 1).Count();
-            ViewBag.tdtpdanang = db.BatDongSans.Where(x => x.QuanHuyen.TinhThanhPho.ID == 4).Where(x => x.TrangThai == 3).Where(x => x.IDLoaiBaiDang == 1).Count();
-            ViewBag.tdtinhdongnai = db.BatDongSans.Where(x => x.QuanHuyen.TinhThanhPho.ID == 96).Where(x => x.TrangThai == 3).Where(x => x.IDLoaiBaiDang == 1).Count();
-            ViewBag.tdtpbinhduong = db.BatDongSans.Where(x => x.QuanHuyen.TinhThanhPho.ID == 77).Where(x => x.TrangThai == 3).Where(x => x.IDLoaiBaiDang == 1).Count();
+            ViewBag.tdtphcm = db.BatDongSans.Where(x => x.QuanHuyen.TinhThanhPho.ID == 140).Where(x => x.TrangThai == 3).Count();
+            ViewBag.tdtphanoi = db.BatDongSans.Where(x => x.QuanHuyen.TinhThanhPho.ID == 1).Where(x => x.TrangThai == 3).Count();
+            ViewBag.tdtpdanang = db.BatDongSans.Where(x => x.QuanHuyen.TinhThanhPho.ID == 4).Where(x => x.TrangThai == 3).Count();
+            ViewBag.tdtinhdongnai = db.BatDongSans.Where(x => x.QuanHuyen.TinhThanhPho.ID == 96).Where(x => x.TrangThai == 3).Count();
+            ViewBag.tdtpbinhduong = db.BatDongSans.Where(x => x.QuanHuyen.TinhThanhPho.ID == 77).Where(x => x.TrangThai == 3).Count();
             ViewBag.listduannoibat = db.DuAns.Where(x => x.ID != 1).Take(5).ToList();
             return View(batdongsan1);
         }                   
@@ -347,7 +347,7 @@ namespace PBDS.Controllers
             ttp.Add(new TinhThanhPho() { ID = 0, TenTinhThanhPho = "Tất cả tỉnh thành" });
             ttp.AddRange(db.TinhThanhPhoes.ToList());
             ViewBag.listtinhthanh = ttp.OrderBy(o => o.TenTinhThanhPho);
-            ViewBag.countbatdongsan = model.Count();
+            ViewBag.countbatdongsan = model.Count();            
             if (batdongsansearch.IDTinhThanhPho.HasValue)
             {
                 List<QuanHuyen> qh = new List<QuanHuyen>();

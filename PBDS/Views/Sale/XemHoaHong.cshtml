@@ -1,0 +1,90 @@
+﻿@model IEnumerable<PBDS.Models.EPhanCongSales>
+@{
+    ViewBag.Title = "TinhLuong";
+    ViewBag.tennhanvien = ViewBag.tennhanvien;
+    Layout = "~/Views/Shared/Layout_Sale.cshtml";
+}
+
+<style>
+    #grid .k-grid-content {
+        min-height: 440px;
+        max-height: 440px;
+    }
+</style>
+
+<h4>Xem hoa hồng</h4>
+
+@using (Html.BeginForm("XemHoaHong", "Sale", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="row" style="padding:15px">
+        
+        <div style="padding:0px 50px 0px 50px">
+            <div>
+                <div>Từ ngày</div>
+            </div>
+            <div class="form-group">
+                <div class='input-group date'>
+                    @if (ViewBag.ngaycapnhattu == "0001-01-01")
+                    {
+                        <input class="form-control" name="ngaycapnhattu" type="date" value="@DateTime.Today.ToString(string.Format("yyyy-MM-dd"))" />
+                    }
+                    else
+                    {
+                        <input class="form-control" name="ngaycapnhattu" type="date" value="@ViewBag.ngaycapnhattu" />
+                    }
+
+                </div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div>
+                    <div>Đến ngày</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class=''>
+                    @if (ViewBag.ngaycapnhatden == "0001-01-01")
+                    {
+                        <input class="form-control" name="ngaycapnhatden" type="date" value="@DateTime.Today.ToString(string.Format("yyyy-MM-dd"))" />
+                    }
+                    else
+                    {
+                        <input class="form-control" name="ngaycapnhatden" type="date" value="@ViewBag.ngaycapnhatden" />
+                    }
+                </div>
+            </div>
+        </div>
+
+        <input type="submit" name="Submit" id="btnSearch" class="btn btn-info" style="font-size:17px ;margin:15px 30px 10px 50px;padding:10px 30px 10px 30px ;color:white;" value="Tìm kiếm" />       
+    </div>
+}
+
+
+@(Html.Kendo().Grid<PBDS.Models.EPhanCongSales>(Model)
+                                .Name("grid")
+                                .Columns(columns =>
+                                {
+                                    columns.Bound(p => p.TenSale).Title("Nhân Viên Sale");
+                                    columns.Bound(p => p.TenBatDongSan).Title("Tên bất động sản").Width(350);
+                                    columns.Bound(p => p.GiaBatDongSan).Width(200).Title("Giá bất động sản");
+                                    columns.Bound(p => p.PhanTramHoaHong_string).Width(180).Title("Phần trăm hoa hồng");
+                                    columns.Bound(p => p.HoaHong).Width(200).Title("Hoa hồng");
+                                })
+                                .Editable(editable => editable.Mode(GridEditMode.PopUp))
+                                .Pageable()
+                                .Sortable()
+                                .Scrollable()
+                                .HtmlAttributes(new { style = "height:550px;" })
+                                .DataSource(dataSource => dataSource
+                                    .Ajax()
+                                    .PageSize(20)
+                                    .Events(events => events.Error("error_handler"))
+                                    .Model(model => model.Id(p => p.ID))
+
+                                )
+)
+
+@section scripts
+{}
+

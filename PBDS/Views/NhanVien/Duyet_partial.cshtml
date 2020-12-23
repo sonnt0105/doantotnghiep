@@ -115,8 +115,8 @@
     {
         <p><b>@Html.DisplayName("Email liên hệ")</b> : @Model.EmailLienHe</p>
     }
-    <div class="center"  style="margin:0px 0px 10px 0px; ">
-        @using (Html.BeginForm("Duyet", "Admin", FormMethod.Post))
+    <div class="center" style="margin:0px 0px 10px 0px; ">
+        @using (Html.BeginForm("Duyet", "NhanVien", FormMethod.Post))
         {
             @Html.HiddenFor(m => m.ID)
             <div class="center">
@@ -124,11 +124,11 @@
             </div>
         }
 
-        @using (Html.BeginForm("LoaiBo", "Admin", FormMethod.Post))
+        @using (Html.BeginForm("LoaiBo", "NhanVien", FormMethod.Post))
         {
             @Html.HiddenFor(m => m.ID)
 
-            <input style="margin:0px 15px 0px 15px; font-size:20px"  type="submit" class="btn btn-danger" value="Loại Bỏ" onclick="return confirm('Chọn Ok Loại bỏ bài đăng');" />
+            <input style="margin:0px 15px 0px 15px; font-size:20px" type="submit" class="btn btn-danger" value="Loại Bỏ" onclick="return confirm('Chọn Ok Loại bỏ bài đăng');" />
 
         }
         <button style="font-size:20px" type="button" class="btn btn-info" data-dismiss="modal">Hủy</button>

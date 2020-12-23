@@ -3623,6 +3623,7 @@
     <Compile Include="Models\ESale.cs" />
     <Compile Include="Models\ETinhThanhPho.cs" />
     <Compile Include="Models\ETraLoi.cs" />
+    <Compile Include="Models\ExportPhanCong.cs" />
     <Compile Include="Models\LoaiBaiDang.cs">
       <DependentUpon>DB_BatDongSan.tt</DependentUpon>
     </Compile>
@@ -4745,9 +4746,6 @@
     <Content Include="Scripts\kendo\2020.3.915\cultures\kendo.culture.aa-ET.min.js.map" />
     <Content Include="Scripts\kendo\2020.3.915\cultures\kendo.culture.aa-ER.min.js.map" />
     <Content Include="Scripts\kendo\2020.3.915\cultures\kendo.culture.aa-DJ.min.js.map" />
-    <Content Include="Views\Admin\Danhsach_DuyetBaiDang.cshtml" />
-    <Content Include="Views\Admin\Duyet_partial.cshtml" />
-    <Content Include="Views\Admin\TinhLuong.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Shared\LayoutNhanVien.cshtml" />
     <Content Include="Views\NhanVien\ThemBatDongSan.cshtml" />
@@ -4788,6 +4786,10 @@
     <Content Include="Views\Home\Detail_duan.cshtml" />
     <Content Include="Views\Home\ThemBatDongSan.cshtml" />
     <Content Include="Views\Admin\ThemNhanVien.cshtml" />
+    <Content Include="Views\NhanVien\Danhsach_DuyetBaiDang.cshtml" />
+    <Content Include="Views\NhanVien\Duyet_partial.cshtml" />
+    <Content Include="Views\NhanVien\TinhLuong.cshtml" />
+    <Content Include="Views\Sale\XemHoaHong.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
