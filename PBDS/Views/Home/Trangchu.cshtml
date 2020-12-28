@@ -190,10 +190,9 @@
                         <div class="select-control price-control">
                             <div class="select-control-label">
                                 <div class="">Mức giá</div>
-                            </div>
-                            <div class="price-slider-range ">
-                                <input id="txtPriceMinValue" name="GiaTu" placeholder="Từ...Triệu" class="min-value advance-options"size="13" style="padding:5px 0px; width:115px" maxlength="6" numbersonly="true" decimal="true" type="number" />
-                                <input id="txtPriceMaxValue" name="GiaDen" placeholder="Đến...Triệu" class="max-value advance-options" size="13"style="padding:5px 0px; width:115px" maxlength="6" numbersonly="true" decimal="true" type="number" />
+                            </div>                            
+                            <div class="form-group">
+                                @Html.DropDownList("MucGia", new SelectList(ViewBag.mucgia), "Mức Giá", new { @class = "form-control" })
                             </div>
                         </div>
 

@@ -72,11 +72,11 @@
                 <div>Nhập tìm kiếm</div>
             </div>
             <div class="form-group">
-                <input type="text" placeholder="Tìm kiếm tên bất động sản" value="" name="searchstring" style="height:38px" size="30" />
+                <input type="text" placeholder="Nhập ID" value="" name="ID" style="height:38px" size="30" />
             </div>
         </div>
 
-        <div class="col-sm-4">
+        @*<div class="col-sm-4">
             <div>
                 <div class="">Mức giá</div>
             </div>
@@ -117,7 +117,7 @@
             <div class="form-group">
                 @Html.DropDownList("IDQuanHuyen", new SelectList(ViewBag.listquanhuyen, "ID", "TenQuanHuyen"), new { @class = "form-control", @onchange = "javascript:GetDuAn(this.value);", id = "ddlquanhuyen", name = "ddlquanhuyen" })
             </div>
-        </div>
+        </div>*@
         <input type="submit" id="btnSearch" class="btn btn-info" style="font-size:17px ;margin:15px 30px 10px 300px;padding:15px 40px 15px 40px ;color:white;" value="Tìm kiếm" />
     </div>
 }

@@ -110,7 +110,8 @@ namespace PBDS.Controllers
         }
 
         [HttpPost]
-        public ActionResult ThemNhanVien(NhanVien nv)
+        [ValidateAntiForgeryToken]
+        public ActionResult ThemNhanVien([Bind(Include = "HoTen,TaiKhoan,MatKhau,Email,SoDienThoai,DiaChi")]NhanVien nv)
         {
             if (nv == null)
             {
@@ -219,6 +220,14 @@ namespace PBDS.Controllers
                 dotthi.Add(item.TenBaiThi);
             }
             ViewBag.dotthi = dotthi;
+            List<string> listdotthi = new List<string>();
+            foreach(var item in db.DIEMs.ToList())
+            {
+                if (listdotthi.Contains(item.TenBaiThi))
+                    continue;
+                listdotthi.Add(item.TenBaiThi);
+            }
+            ViewBag.listdotthi = listdotthi;
             if (Session["admin"] != null)
             {
                 return View();
@@ -227,6 +236,7 @@ namespace PBDS.Controllers
             {
                 return RedirectToAction("../Home/Login");
             }
+            
         }
         [HttpPost]
         public ActionResult Uploads(FormCollection formCollection)
@@ -253,6 +263,8 @@ namespace PBDS.Controllers
             }           
             return View();
         }      
+
+
 
         public ActionResult ChoKiemTRa(Admin admin)
         {                       
@@ -356,39 +368,66 @@ namespace PBDS.Controllers
             return Redirect("Uploads");
         }
 
-        public List<EBangDiem> GetBangdiem()
+        public List<EBangDiem> GetBangdiem(string dotthi)
         {
             List<EBangDiem> bangdiem = new List<EBangDiem>();
             foreach (var item in db.DIEMs.ToList())
             {
                 if(item.IDNhanVien != null)
                 {
-                    bangdiem.Add(new EBangDiem
+                    if(dotthi == item.TenBaiThi)
                     {
-                        TenNhanVien = db.NhanViens.Where(x => x.ID == item.IDNhanVien).FirstOrDefault().HoTen,
-                        Dotthi = item.TenBaiThi,
-                        Diem =  item.SoDiem,
-                        NgayThi = item.NgayThi
-                    });
+                        bangdiem.Add(new EBangDiem
+                        {
+                            TenNhanVien = db.NhanViens.Where(x => x.ID == item.IDNhanVien).FirstOrDefault().HoTen,
+                            Dotthi = item.TenBaiThi,
+                            Diem = item.SoDiem,
+                            NgayThi = item.NgayThi
+                        });
+                    }
+                    if (dotthi == "")
+                    {
+                        bangdiem.Add(new EBangDiem
+                        {
+                            TenNhanVien = db.NhanViens.Where(x => x.ID == item.IDNhanVien).FirstOrDefault().HoTen,
+                            Dotthi = item.TenBaiThi,
+                            Diem = item.SoDiem,
+                            NgayThi = item.NgayThi
+                        });
+                    }
+                    
                 }
-                else
+                if(item.IDSale !=null)
                 {
-                    bangdiem.Add(new EBangDiem
+                    if (dotthi == item.TenBaiThi)
                     {
-                        TenNhanVien = db.Sales.Where(x => x.ID == item.IDSale).FirstOrDefault().TenSales,
-                        Dotthi = item.TenBaiThi,
-                        Diem = item.SoDiem,
-                        NgayThi = item.NgayThi
-                    });
+                        bangdiem.Add(new EBangDiem
+                        {
+                            TenNhanVien = db.Sales.Where(x => x.ID == item.IDSale).FirstOrDefault().TenSales,
+                            Dotthi = item.TenBaiThi,
+                            Diem = item.SoDiem,
+                            NgayThi = item.NgayThi
+                        });
+                    }
+                    if(dotthi == null)
+                    {
+                        bangdiem.Add(new EBangDiem
+                        {
+                            TenNhanVien = db.Sales.Where(x => x.ID == item.IDSale).FirstOrDefault().TenSales,
+                            Dotthi = item.TenBaiThi,
+                            Diem = item.SoDiem,
+                            NgayThi = item.NgayThi
+                        });
+                    }
                 }
             }
             return bangdiem;
         }
 
-        public ActionResult ExportToExcel_bangdiem()
+        public ActionResult ExportToExcel_bangdiem(string dotthi)
         {
             var gv = new GridView();
-            gv.DataSource = this.GetBangdiem();
+            gv.DataSource = this.GetBangdiem(dotthi);
             gv.DataBind();
             Response.ClearContent();
             Response.Buffer = true;
