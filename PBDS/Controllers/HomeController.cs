@@ -23,13 +23,20 @@ namespace PBDS.Controllers
         {
             ViewBag.listloainhadat = db.LoaiNhaDats.Where(x => x.IDLoaiBaiDang == 1).ToList();
             List<TinhThanhPho> ttp = new List<TinhThanhPho>();
-            ttp.Add(new TinhThanhPho() { ID = 0, TenTinhThanhPho = "Tất cả tỉnh thành" });
+            ttp.Add(new TinhThanhPho() { ID = 0, TenTinhThanhPho = " Tất cả tỉnh thành" });
             ttp.AddRange(db.TinhThanhPhoes.ToList());
-            ViewBag.listtinhthanh = ttp.OrderBy(o => o.TenTinhThanhPho);
+            ttp.OrderBy(o => o.TenTinhThanhPho);            
+            ViewBag.listtinhthanh = ttp;
             ViewBag.listquanhuyen = db.QuanHuyens.Where(x => x.ID == 0).ToList();
             ViewBag.listphuongxa = db.PhuongXas.Where(x => x.ID == 0).ToList();
             ViewBag.listduan = db.DuAns.Where(x => x.ID == 0).ToList();
-            
+            List<string> mucgia = new List<string>();
+            mucgia.Add("trên 3 triệu");
+            mucgia.Add("trên 10 triệu");
+            mucgia.Add("trên 100 triệu");
+            mucgia.Add("trên 1 tỷ");
+            ViewBag.mucgia = mucgia;
+
             var batdongsan1 = db.BatDongSans.Where(x=>x.TrangThai == 3).ToList().Take(8);
             ViewBag.batdongsan2 = db.BatDongSans.Where(x => x.TrangThai == 3).ToList().Skip(8).Take(8);
             ViewBag.tdtphcm = db.BatDongSans.Where(x => x.QuanHuyen.TinhThanhPho.ID == 140).Where(x => x.TrangThai == 3).Count();
@@ -39,8 +46,8 @@ namespace PBDS.Controllers
             ViewBag.tdtpbinhduong = db.BatDongSans.Where(x => x.QuanHuyen.TinhThanhPho.ID == 77).Where(x => x.TrangThai == 3).Count();
             ViewBag.listduannoibat = db.DuAns.Where(x => x.ID != 1).Take(5).ToList();
             return View(batdongsan1);
-        }                   
-        
+        }                 
+
         public ActionResult Detail_batdongsan(int? ID)
         {
             var batdongsan = db.BatDongSans.Where(x => x.ID == ID).FirstOrDefault();
@@ -56,7 +63,7 @@ namespace PBDS.Controllers
             ViewBag.listloainhadat = lnd;
 
             List<TinhThanhPho> ttp = new List<TinhThanhPho>();
-            ttp.Add(new TinhThanhPho() { ID = 0, TenTinhThanhPho = "Tất cả tỉnh thành" });
+            ttp.Add(new TinhThanhPho() { ID = 0, TenTinhThanhPho = " Tất cả tỉnh thành" });
             ttp.AddRange(db.TinhThanhPhoes.ToList());
             ViewBag.listtinhthanh = ttp.OrderBy(o => o.TenTinhThanhPho);
 
@@ -68,6 +75,12 @@ namespace PBDS.Controllers
             ViewBag.listphuongxa = db.PhuongXas.Where(x => x.ID == 0).ToList();
             ViewBag.listduan = db.DuAns.Where(x => x.ID == 0).ToList();            
             ViewBag.nhanviensale = db.PhanCongs.Where(x => x.IDBatDongSan == ID).FirstOrDefault();
+            List<string> mucgia = new List<string>();
+            mucgia.Add("trên 3 triệu");
+            mucgia.Add("trên 10 triệu");
+            mucgia.Add("trên 100 triệu");
+            mucgia.Add("trên 1 tỷ");
+            ViewBag.mucgia = mucgia;
             return View(batdongsan);
         }       
 
@@ -236,13 +249,18 @@ namespace PBDS.Controllers
                         };            
             ViewBag.listloainhadat = db.LoaiNhaDats.Where(x => x.IDLoaiBaiDang == 1).ToList();
             List<TinhThanhPho> ttp = new List<TinhThanhPho>();
-            ttp.Add(new TinhThanhPho() { ID = 0, TenTinhThanhPho = "Tất cả tỉnh thành" });
+            ttp.Add(new TinhThanhPho() { ID = 0, TenTinhThanhPho = " Tất cả tỉnh thành" });
             ttp.AddRange(db.TinhThanhPhoes.ToList());
             ViewBag.listtinhthanh = ttp.OrderBy(o => o.TenTinhThanhPho);
             ViewBag.listquanhuyen = db.QuanHuyens.Where(x => x.ID == 0).ToList();
             ViewBag.listphuongxa = db.PhuongXas.Where(x => x.ID == 0).ToList();
             ViewBag.listduan = db.DuAns.Where(x => x.ID == 0).ToList();
-
+            List<string> mucgia = new List<string>();
+            mucgia.Add("trên 3 triệu");
+            mucgia.Add("trên 10 triệu");
+            mucgia.Add("trên 100 triệu");
+            mucgia.Add("trên 1 tỷ");
+            ViewBag.mucgia = mucgia;
             if (page > 0)
             {
                 page = page;
@@ -285,13 +303,18 @@ namespace PBDS.Controllers
                         };
             ViewBag.listloainhadat = db.LoaiNhaDats.Where(x => x.IDLoaiBaiDang == 2).ToList();
             List<TinhThanhPho> ttp = new List<TinhThanhPho>();
-            ttp.Add(new TinhThanhPho() { ID = 0, TenTinhThanhPho = "Tất cả tỉnh thành" });
+            ttp.Add(new TinhThanhPho() { ID = 0, TenTinhThanhPho = " Tất cả tỉnh thành" });
             ttp.AddRange(db.TinhThanhPhoes.ToList());
             ViewBag.listtinhthanh = ttp.OrderBy(o => o.TenTinhThanhPho);
             ViewBag.listquanhuyen = db.QuanHuyens.Where(x => x.ID == 0).ToList();
             ViewBag.listphuongxa = db.PhuongXas.Where(x => x.ID == 0).ToList();
             ViewBag.listduan = db.DuAns.Where(x => x.ID == 0).ToList();
-
+            List<string> mucgia = new List<string>();
+            mucgia.Add("trên 3 triệu");
+            mucgia.Add("trên 10 triệu");
+            mucgia.Add("trên 100 triệu");
+            mucgia.Add("trên 1 tỷ");
+            ViewBag.mucgia = mucgia;
             if (page > 0)
             {
                 page = page;
@@ -344,14 +367,20 @@ namespace PBDS.Controllers
             ViewBag.textsearch = batdongsansearch.searchstring;
             ViewBag.listloainhadat = db.LoaiNhaDats.Where(x => x.IDLoaiBaiDang == 1).ToList();
             List<TinhThanhPho> ttp = new List<TinhThanhPho>();
-            ttp.Add(new TinhThanhPho() { ID = 0, TenTinhThanhPho = "Tất cả tỉnh thành" });
+            ttp.Add(new TinhThanhPho() { ID = 0, TenTinhThanhPho = " Tất cả tỉnh thành" });
             ttp.AddRange(db.TinhThanhPhoes.ToList());
             ViewBag.listtinhthanh = ttp.OrderBy(o => o.TenTinhThanhPho);
-            ViewBag.countbatdongsan = model.Count();            
+            ViewBag.countbatdongsan = model.Count();
+            List<string> mucgia = new List<string>();
+            mucgia.Add("trên 3 triệu");
+            mucgia.Add("trên 10 triệu");
+            mucgia.Add("trên 100 triệu");
+            mucgia.Add("trên 1 tỷ");
+            ViewBag.mucgia = mucgia;
             if (batdongsansearch.IDTinhThanhPho.HasValue)
             {
                 List<QuanHuyen> qh = new List<QuanHuyen>();
-                qh.Add(new QuanHuyen() { ID = 0, TenQuanHuyen = "Tất cả quận huyện" });
+                qh.Add(new QuanHuyen() { ID = 0, TenQuanHuyen = " Tất cả quận huyện" });
                 qh.AddRange(db.QuanHuyens.Where(x => x.IDTinhThanhPho == batdongsansearch.IDTinhThanhPho).ToList());
                 ViewBag.listquanhuyen = qh;
             }
@@ -426,11 +455,9 @@ namespace PBDS.Controllers
                     result = result.Where(x => x.IDQuanHuyen == batdongsansearch.IDQuanHuyen).ToList();
 
                 //search theo điều kiện mức giá lớn hơn mức giá X
-                if (batdongsansearch.GiaTu.HasValue)
-                    result = TimKiemBaiDangTheoGiaTu(result, batdongsansearch.GiaTu);
+                if (!string.IsNullOrEmpty(batdongsansearch.MucGia))
+                    result = TimKiemBaiDangTheoGia(result, batdongsansearch.MucGia);
                 //search theo điều kiện mức giá nhỏ hơn mức giá X
-                if (batdongsansearch.GiaDen.HasValue)
-                    result = TimKiemBaiDangTheoGiaDen(result, batdongsansearch.GiaDen);
 
                 //search theo điều kiện phường xã
                 if (batdongsansearch.IDPhuongXa.HasValue && batdongsansearch.IDPhuongXa != 0)
@@ -452,7 +479,7 @@ namespace PBDS.Controllers
             return result.AsQueryable();
         }
 
-        public List<BatDongSan> TimKiemBaiDangTheoGiaTu(List<BatDongSan> listbatdongsan, double? giatu)
+        public List<BatDongSan> TimKiemBaiDangTheoGia(List<BatDongSan> listbatdongsan, string mucgia)
         {
             var result = listbatdongsan;
             foreach (var item in listbatdongsan)
@@ -464,7 +491,16 @@ namespace PBDS.Controllers
                 if (item.IDDonVi == 7)
                     item.Gia = item.Gia / 1000;
             }
-            result = result.Where(x => x.Gia >= giatu).ToList();
+            if(mucgia == "trên 3 triệu")
+            {
+                result = result.Where(x => x.Gia > 3).ToList();
+            }
+            if(mucgia == "trên 10 triệu")
+                result = result.Where(x => x.Gia > 10).ToList();
+            if (mucgia == "trên 100 triệu")
+                result = result.Where(x => x.Gia > 100).ToList();
+            if (mucgia == "trên 1 tỷ")
+                result = result.Where(x => x.Gia > 1000).ToList();
             foreach (var item in result)
             {
                 if (item.IDDonVi == 2)
@@ -476,31 +512,7 @@ namespace PBDS.Controllers
             }
             return result;
         }
-
-        public List<BatDongSan> TimKiemBaiDangTheoGiaDen(List<BatDongSan> listbatdongsan, double? giaden)
-        {
-            var result = listbatdongsan;
-            foreach (var item in listbatdongsan)
-            {
-                if (item.IDDonVi == 2)
-                    item.Gia = item.Gia * 1000;
-                if (item.IDDonVi == 3 || item.IDDonVi == 5 || item.IDDonVi == 8)
-                    item.Gia = item.Gia / 10;
-                if (item.IDDonVi == 7)
-                    item.Gia = item.Gia / 1000;
-            }
-            result = result.Where(x => x.Gia <= giaden).ToList();
-            foreach (var item in result)
-            {
-                if (item.IDDonVi == 2)
-                    item.Gia = item.Gia / 1000;
-                if (item.IDDonVi == 3 || item.IDDonVi == 5 || item.IDDonVi == 8)
-                    item.Gia = item.Gia * 10;
-                if (item.IDDonVi == 7)
-                    item.Gia = item.Gia * 1000;
-            }
-            return result;
-        }
+        
 
         public List<BatDongSan> TimKiemBaiDangTheoChuoi(string searchstring)
         {
@@ -678,7 +690,7 @@ namespace PBDS.Controllers
                         };
             ViewBag.listloaiduan = db.LoaiDuAns.ToList();
             List<TinhThanhPho> ttp = new List<TinhThanhPho>();
-            ttp.Add(new TinhThanhPho() { ID = 0, TenTinhThanhPho = "Tất cả tỉnh thành" });
+            ttp.Add(new TinhThanhPho() { ID = 0, TenTinhThanhPho = " Tất cả tỉnh thành" });
             ttp.AddRange(db.TinhThanhPhoes.ToList());
             ViewBag.listtinhthanh = ttp.OrderBy(o=>o.TenTinhThanhPho);
             ViewBag.listquanhuyen = db.QuanHuyens.Where(x=>x.ID==0).ToList();
@@ -700,7 +712,7 @@ namespace PBDS.Controllers
             ViewBag.listloaiduan = lda;
 
             List<TinhThanhPho> ttp = new List<TinhThanhPho>();
-            ttp.Add(new TinhThanhPho() { ID = 0, TenTinhThanhPho = "Tất cả tỉnh thành" });
+            ttp.Add(new TinhThanhPho() { ID = 0, TenTinhThanhPho = " Tất cả tỉnh thành" });
             ttp.AddRange(db.TinhThanhPhoes.ToList());
             ViewBag.listtinhthanh = ttp.OrderBy(o => o.TenTinhThanhPho);
 
@@ -748,7 +760,7 @@ namespace PBDS.Controllers
             ViewBag.duansearch = duansearch;
             ViewBag.textsearch = duansearch.searchstring;
             List<TinhThanhPho> ttp = new List<TinhThanhPho>();
-            ttp.Add(new TinhThanhPho() { ID = 0, TenTinhThanhPho = "Tất cả tỉnh thành" });
+            ttp.Add(new TinhThanhPho() { ID = 0, TenTinhThanhPho = " Tất cả tỉnh thành" });
             ttp.AddRange(db.TinhThanhPhoes.ToList());
             ViewBag.listtinhthanh = ttp.OrderBy(o => o.TenTinhThanhPho);
             ViewBag.listloaiduan = db.LoaiDuAns.ToList();

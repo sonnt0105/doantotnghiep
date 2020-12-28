@@ -33,6 +33,7 @@ namespace PBDS.Models
         public DateTime NgayCapNhatTu { get; set; }
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime NgayCapNhatDen { get; set; }
+        public string MucGia { get; set; }
 
         public virtual DuAn DuAn { get; set; }
         public virtual LoaiBaiDang LoaiBaiDang { get; set; }

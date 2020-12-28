@@ -977,12 +977,12 @@ namespace PBDS.Controllers
 
         public IQueryable<PhanCong> GetPhancongtheothoigian(EBatDongSansearch batdongsansearch, ESale sale)
         {
-            DateTime dt = DateTime.MinValue;
+            //DateTime dt = DateTime.MinValue;
             var result = db.PhanCongs.Where(x => x.BatDongSan.TrangThai == 4).ToList();
-            if (batdongsansearch.NgayCapNhatTu != dt)
+            //if (batdongsansearch.NgayCapNhatTu != dt)
                 result = result.Where(x => x.BatDongSan.NgayCapNhat >= batdongsansearch.NgayCapNhatTu).ToList();
 
-            if (batdongsansearch.NgayCapNhatDen != dt)
+            //if (batdongsansearch.NgayCapNhatDen != dt)
                 result = result.Where(x => x.BatDongSan.NgayCapNhat <= batdongsansearch.NgayCapNhatDen).ToList();
             if (sale.ID != 0)
             {

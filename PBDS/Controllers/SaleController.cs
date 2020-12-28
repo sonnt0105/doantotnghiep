@@ -113,6 +113,8 @@ namespace PBDS.Controllers
             var result = db.PhanCongs.Where(x => x.IDSales == idsale).ToList();
             if (batdongsansearch != null)
             {
+                if (batdongsansearch.ID != 0)
+                    result = result.Where(x => x.BatDongSan.ID == batdongsansearch.ID).ToList();
                 //search theo điều kiện loại bài đăng
                 if (batdongsansearch.IDLoaiBaiDang.HasValue)
                     result = result.Where(x => x.BatDongSan.IDLoaiBaiDang == batdongsansearch.IDLoaiBaiDang).ToList();
@@ -412,12 +414,12 @@ namespace PBDS.Controllers
 
         public IQueryable<PhanCong> GetPhancongtheothoigian(EBatDongSansearch batdongsansearch, int idsale)
         {
-            DateTime dt = DateTime.MinValue;
+            //DateTime dt = DateTime.MinValue;
             var result = db.PhanCongs.Where(x => x.BatDongSan.TrangThai == 4).ToList();
-            if (batdongsansearch.NgayCapNhatTu != dt)
+            //if (batdongsansearch.NgayCapNhatTu != dt)
                 result = result.Where(x => x.BatDongSan.NgayCapNhat >= batdongsansearch.NgayCapNhatTu).ToList();
 
-            if (batdongsansearch.NgayCapNhatDen != dt)
+            //if (batdongsansearch.NgayCapNhatDen != dt)
                 result = result.Where(x => x.BatDongSan.NgayCapNhat <= batdongsansearch.NgayCapNhatDen).ToList();
 
             result = result.Where(x => x.IDSales == idsale).ToList();
